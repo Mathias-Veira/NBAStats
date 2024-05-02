@@ -1,0 +1,36 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "name": "nba_stats",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "nba_stats (debug mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define=BALL_DONT_LIE=475f2ca9-26a3-4a5b-a3d8-2942adc3f3ad"
+              ],
+        },
+        {
+            "name": "nba_stats (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "nba_stats (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+        
+    ]
+}
