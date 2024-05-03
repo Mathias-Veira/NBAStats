@@ -4,7 +4,7 @@ class Data {
   int id;
   DateTime date;
   int season;
-  String status;
+  DateTime? status;
   int period;
   String time;
   bool postseason;
@@ -31,9 +31,9 @@ class Data {
         id: json["id"],
         date: DateTime.parse(json["date"]),
         season: json["season"],
-        status: json["status"],
+        status: DateTime.tryParse(json["status"]),
         period: json["period"],
-        time: json["time"],
+        time: json["time"] ?? "Not started",
         postseason: json["postseason"],
         homeTeamScore: json["home_team_score"],
         visitorTeamScore: json["visitor_team_score"],

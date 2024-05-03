@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_interpolation_to_compose_strings
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
@@ -27,7 +29,7 @@ class _GamesState extends State<Games> {
 
   @override
   Widget build(BuildContext context) {
-    selectedDate = selectedDate.subtract(Duration(days: 1));
+    selectedDate = selectedDate;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -59,7 +61,8 @@ class _GamesState extends State<Games> {
                 } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
                 } else {
-                  return _ListaPartidos(snapshot.data.data);
+                  return _ListaPartidos(
+                      snapshot.data != null ? snapshot.data.data : []);
                 }
               }),
         ),
@@ -84,8 +87,25 @@ class _ListaPartidos extends StatelessWidget {
         itemCount: partidos.length,
         itemBuilder: (BuildContext context, int i) {
           return ListTile(
-            title: Text(partidos[i].visitorTeam.name + ' ' + partidos[i].visitorTeamScore.toString() + '-' + partidos[i].homeTeamScore.toString() + ' ' + partidos[i].homeTeam.name)
-          
+            title: Center(
+                child: Text(partidos[i].visitorTeam.name +
+                    ' ' +
+                    partidos[i].visitorTeamScore.toString() +
+                    '-' +
+                    partidos[i].homeTeamScore.toString() +
+                    ' ' +
+                    partidos[i].homeTeam.name)),
+            subtitle: Center(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(partidos[i].time),
+                if (partidos[i].time == 'Not started')
+                  Text(' ' +(partidos[i].status?.add(const Duration(hours: 2)).hour).toString() + ':' + (partidos[i].status?.add(const Duration(hours: 2)).minute).toString().padLeft(2, '0'))
+                else
+                  const SizedBox()
+              ],
+            )),
           );
         });
   }
