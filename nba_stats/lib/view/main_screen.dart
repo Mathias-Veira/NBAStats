@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nba_stats/view/standings.dart';
 
 import 'games.dart';
 import 'home.dart';
@@ -13,7 +14,7 @@ class _HomeState extends State<MainScreen> {
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
-    final screens = [const Home(), const Games()];
+    final screens = [const Home(), const Games(),const standings()];
     return Scaffold(
       body: IndexedStack(
         index: selectedIndex,
@@ -38,6 +39,14 @@ class _HomeState extends State<MainScreen> {
             icon: Icon(Icons.sports_basketball,color: Theme.of(context).hintColor,),
             activeIcon: Icon(Icons.sports_basketball_outlined,color: Theme.of(context).hintColor,),
             label: 'Games',
+            backgroundColor: Theme.of(context).hintColor,
+            
+          ),
+
+          BottomNavigationBarItem(
+            icon: Icon(Icons.star_border,color: Theme.of(context).hintColor,),
+            activeIcon: Icon(Icons.star,color: Theme.of(context).hintColor,),
+            label: 'Standings',
             backgroundColor: Theme.of(context).hintColor,
             
           ),

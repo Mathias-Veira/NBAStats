@@ -87,14 +87,31 @@ class _ListaPartidos extends StatelessWidget {
         itemCount: partidos.length,
         itemBuilder: (BuildContext context, int i) {
           return ListTile(
-            title: Center(
-                child: Text(partidos[i].visitorTeam.name +
-                    ' ' +
-                    partidos[i].visitorTeamScore.toString() +
-                    '-' +
-                    partidos[i].homeTeamScore.toString() +
-                    ' ' +
-                    partidos[i].homeTeam.name)),
+            title: Row(
+              children: [
+                Container(
+                  width: 70,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: 
+                  Image.asset('assets/img_teams/' + partidos[i].visitorTeam.city +' '+partidos[i].visitorTeam.name + '.png')
+                  ),
+                Center(
+                    child: Text(partidos[i].visitorTeam.name +
+                        ' ' +
+                        partidos[i].visitorTeamScore.toString() +
+                        '-' +
+                        partidos[i].homeTeamScore.toString() +
+                        ' ' +
+                        partidos[i].homeTeam.name)),
+
+                Container(
+                  width: 70,
+                  decoration: BoxDecoration(shape: BoxShape.circle),
+                  child: 
+                  Image.asset('assets/img_teams/' + partidos[i].homeTeam.city +' '+ partidos[i].homeTeam.name + '.png')
+                  ),        
+              ],
+            ),
             subtitle: Center(
                 child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:nba_stats/model/equipo.dart';
 import 'package:nba_stats/model/game.dart';
 
 import '../model/acceso.dart';
@@ -15,7 +16,7 @@ import '../model/usuario.dart';
 //Clase que contiene los métodos necesarios para conectarse a la API
 class ApiService {
   //URL base de la API
-  static const String baseUrl = 'http://localhost:8080/api';
+  static const String baseUrl = 'http://192.168.1.118:8080/api';
 
   //Este método permite crear un usuario
   static Future<int> crearUsuario(Usuario usuario) async {
@@ -99,44 +100,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de mazos
+    //Se devuelve la lista de jugadores
     return jugadores;
   }
-  /*
-  //Este método permite listar los partidos que se juegan en una fecha concreta
-  static Future<List<Data>> listarPartidos(DateTime fecha) async {
-    String url =
-        'https://api.balldontlie.io/v1/games?dates[]=${fecha.year}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')}';
-    int statusCode = 0;
-    List<Data> datos = [];
-    try {
-      //Se realiza la petición get al endpoint
-      http.Response response = await http.get(
-        Uri.parse(url),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': '475f2ca9-26a3-4a5b-a3d8-2942adc3f3ad',
-        },
-      );
-
-      Map<String, dynamic> jsonData = json.decode(response.body);
-      Game game = Game.fromJson(jsonData);
-      List<Data> datos = game.data;
-      statusCode = response.statusCode;
-      //Se verifica si el código de respuesta es un 200
-      if (statusCode == 200) {
-        print('listar partidos OK');
-      } else {
-        print('Error al listar partidos: $statusCode');
-      }
-    } catch (e) {
-      print('Error conexión: $e');
-    }
-    //Se devuelve la lista de partidos
-    return datos;
-  }
-  */
 
   static Future<Game?> listarPartidos(DateTime fecha) async {
     String url =
@@ -158,6 +124,27 @@ class ApiService {
     //Se devuelve la lista de partidos
     return null;
   }
+
+  static Future<List<Equipo>> getRanking() async {
+    String url = '$baseUrl/ranking';
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },     
+      );
+      return equipoFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de partidos
+    return List.empty();
+  }
+
+
 
 
 }
