@@ -10,7 +10,7 @@ class Equipo {
     String ciudadEquipo;
     String abreviacionEquipo;
     String imagenEquipo;
-    ConferenciaEquipo conferenciaEquipo;
+    String conferenciaEquipo;
     String divisionEquipo;
     int puestoConferencia;
     int puestoDivision;
@@ -39,7 +39,7 @@ class Equipo {
         ciudadEquipo: json["ciudadEquipo"],
         abreviacionEquipo: json["abreviacionEquipo"],
         imagenEquipo: json["imagenEquipo"],
-        conferenciaEquipo: conferenciaEquipoValues.map[json["conferenciaEquipo"]]!,
+        conferenciaEquipo: json["conferenciaEquipo"],
         divisionEquipo: json["divisionEquipo"],
         puestoConferencia: json["puestoConferencia"],
         puestoDivision: json["puestoDivision"],
@@ -54,7 +54,7 @@ class Equipo {
         "ciudadEquipo": ciudadEquipo,
         "abreviacionEquipo": abreviacionEquipo,
         "imagenEquipo": imagenEquipo,
-        "conferenciaEquipo": conferenciaEquipoValues.reverse[conferenciaEquipo],
+        "conferenciaEquipo": conferenciaEquipo,
         "divisionEquipo": divisionEquipo,
         "puestoConferencia": puestoConferencia,
         "puestoDivision": puestoDivision,
