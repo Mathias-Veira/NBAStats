@@ -144,6 +144,25 @@ class ApiService {
     return List.empty();
   }
 
+   static Future<List<Equipo>> getRankingByConference(String conference) async {
+    String url = '$baseUrl/ranking/$conference';
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },     
+      );
+      return equipoFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de partidos
+    return List.empty();
+  }
+
 
 
 
