@@ -13,6 +13,7 @@ class standings extends StatefulWidget {
 
 class _standingsState extends State<standings> {
   String selectedConference = "None";
+  String selectedDivision = "None";
   List<Equipo> equipos = [];
 
   @override
@@ -24,10 +25,12 @@ class _standingsState extends State<standings> {
   // Función para cargar el ranking
   void _loadRanking() async {
     List<Equipo>? ranking = [];
-    if (selectedConference == "None") {
+    if (selectedConference == "None" && selectedDivision == "None") {
       ranking = await ApiService.getRanking();
-    } else{
+    } else if (selectedConference != 'None') {
       ranking = await ApiService.getRankingByConference(selectedConference);
+    } else if (selectedDivision != 'None') {
+      ranking = await ApiService.getRankingByDivision(selectedDivision);
     }
 
     setState(() {
@@ -44,22 +47,54 @@ class _standingsState extends State<standings> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            DropdownButton<String>(
-              value: selectedConference,
-              onChanged: (value) {
-                setState(() {
-                  selectedConference = value!;
-                  _loadRanking();
-                });
-              },
-              items: <String>['None', 'East', 'West']
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+            Row(
+              children: [
+                Padding(padding: EdgeInsets.only(left: 25.0)),
+                Text("Filter by Conference: "),
+                DropdownButton<String>(
+                  value: selectedConference,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedConference = value!;
+                      _loadRanking();
+                    });
+                  },
+                  items: <String>['None', 'East', 'West']
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                Padding(padding: EdgeInsets.only(left: 25.0)),
+                Text("Filter by Division: "),
+                DropdownButton<String>(
+                  value: selectedDivision,
+                  onChanged: (value) {
+                    setState(() {
+                      selectedDivision = value!;
+                      _loadRanking();
+                    });
+                  },
+                  items: <String>[
+                    'None',
+                    'Atlantic',
+                    'Central',
+                    'Southeast',
+                    'Northwest',
+                    'Pacific',
+                    'SouthWest'
+                  ].map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
             ),
             DataTable(
                 columnSpacing: 15.5,
