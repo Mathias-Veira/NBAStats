@@ -34,7 +34,8 @@ class _GamesState extends State<Games> {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance!.addPostFrameCallback((_) => executeAfterBuild());
+    //Se ejecuta el método executeAfterBuild() una vez se termina de construir el árbol de widgets
+    WidgetsBinding.instance.addPostFrameCallback((_) => executeAfterBuild());
     selectedDate = selectedDate;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,

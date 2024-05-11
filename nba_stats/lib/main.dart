@@ -20,19 +20,6 @@ class NbaStats extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.black,
-        hintColor: Colors.white,
-        iconTheme: const IconThemeData(
-          color: Colors.white,
-        ),
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(
-            color: Colors.white,
-          ),
-          bodyMedium: TextStyle(
-            color: Colors.white,
-          ),
-        ),
       ),
       title: 'NBA Stats',
       debugShowCheckedModeBanner: false,
