@@ -20,6 +20,11 @@ class _GamesState extends State<Games> {
   DateTime startDate = DateTime(2023, 10, 23);
   late DateTime selectedDate;
   List<Data> futurePartidos = [];
+  DatePickerController controller = DatePickerController();
+
+  void executeAfterBuild() {
+    controller.animateToSelection();
+  }
 
   @override
   void initState() {
@@ -29,8 +34,8 @@ class _GamesState extends State<Games> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) => executeAfterBuild());
     selectedDate = selectedDate;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -40,7 +45,7 @@ class _GamesState extends State<Games> {
             color: Theme.of(context).primaryColorLight,
             child: DatePicker(
               initialSelectedDate: DateTime.now(),
-              controller: DatePickerController(),
+              controller: controller,
               startDate,
               selectionColor: Theme.of(context).primaryColor,
               selectedTextColor: Theme.of(context).hintColor,
@@ -90,11 +95,13 @@ class _ListaPartidos extends StatelessWidget {
             title: Row(
               children: [
                 Container(
-                  width: 70,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: 
-                  Image.asset('assets/img_teams/' + partidos[i].visitorTeam.city +' '+partidos[i].visitorTeam.name + '.png')
-                  ),
+                    width: 60,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Image.asset('assets/img_teams/' +
+                        partidos[i].visitorTeam.city +
+                        ' ' +
+                        partidos[i].visitorTeam.name +
+                        '.png')),
                 Center(
                     child: Text(partidos[i].visitorTeam.name +
                         ' ' +
@@ -103,13 +110,14 @@ class _ListaPartidos extends StatelessWidget {
                         partidos[i].homeTeamScore.toString() +
                         ' ' +
                         partidos[i].homeTeam.name)),
-
                 Container(
-                  width: 70,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: 
-                  Image.asset('assets/img_teams/' + partidos[i].homeTeam.city +' '+ partidos[i].homeTeam.name + '.png')
-                  ),        
+                    width: 60,
+                    decoration: BoxDecoration(shape: BoxShape.circle),
+                    child: Image.asset('assets/img_teams/' +
+                        partidos[i].homeTeam.city +
+                        ' ' +
+                        partidos[i].homeTeam.name +
+                        '.png')),
               ],
             ),
             subtitle: Center(
@@ -118,7 +126,13 @@ class _ListaPartidos extends StatelessWidget {
               children: [
                 Text(partidos[i].time),
                 if (partidos[i].time == 'Not started')
-                  Text(' ' +(partidos[i].status?.add(const Duration(hours: 2)).hour).toString() + ':' + (partidos[i].status?.add(const Duration(hours: 2)).minute).toString().padLeft(2, '0'))
+                  Text(' ' +
+                      (partidos[i].status?.add(const Duration(hours: 2)).hour)
+                          .toString() +
+                      ':' +
+                      (partidos[i].status?.add(const Duration(hours: 2)).minute)
+                          .toString()
+                          .padLeft(2, '0'))
                 else
                   const SizedBox()
               ],
