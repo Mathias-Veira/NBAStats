@@ -92,52 +92,59 @@ class _ListaPartidos extends StatelessWidget {
     return ListView.builder(
         itemCount: partidos.length,
         itemBuilder: (BuildContext context, int i) {
-          return ListTile(
-            title: Row(
-              children: [
-                Container(
-                    width: 60,
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: Image.asset('assets/img_teams/' +
-                        partidos[i].visitorTeam.city +
-                        ' ' +
-                        partidos[i].visitorTeam.name +
-                        '.png')),
-                Center(
-                    child: Text(partidos[i].visitorTeam.name +
-                        ' ' +
-                        partidos[i].visitorTeamScore.toString() +
-                        '-' +
-                        partidos[i].homeTeamScore.toString() +
-                        ' ' +
-                        partidos[i].homeTeam.name)),
-                Container(
-                    width: 60,
-                    decoration: BoxDecoration(shape: BoxShape.circle),
-                    child: Image.asset('assets/img_teams/' +
-                        partidos[i].homeTeam.city +
-                        ' ' +
-                        partidos[i].homeTeam.name +
-                        '.png')),
-              ],
+          return Card(
+            child: ListTile(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(width: 6,),
+                  Container(
+                      width: 50,
+                      decoration: BoxDecoration(shape: BoxShape.circle,),
+                      child: Image.asset('assets/img_teams/' +
+                          partidos[i].visitorTeam.city +
+                          ' ' +
+                          partidos[i].visitorTeam.name +
+                          '.png')),
+                  Expanded(
+                    child: Center(
+                        child: Text(partidos[i].visitorTeam.name +
+                            ' ' +
+                            partidos[i].visitorTeamScore.toString() +
+                            '-' +
+                            partidos[i].homeTeamScore.toString() +
+                            ' ' +
+                            partidos[i].homeTeam.name + ' ')),
+                  ),
+                  SizedBox(width: 6,),
+                  Container(
+                      width: 50,
+                      decoration: BoxDecoration(shape: BoxShape.circle),
+                      child: Image.asset('assets/img_teams/' +
+                          partidos[i].homeTeam.city +
+                          ' ' +
+                          partidos[i].homeTeam.name +
+                          '.png')),
+                ],
+              ),
+              subtitle: Center(
+                  child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(partidos[i].time),
+                  if (partidos[i].time == 'Not started')
+                    Text(' ' +
+                        (partidos[i].status?.add(const Duration(hours: 2)).hour)
+                            .toString() +
+                        ':' +
+                        (partidos[i].status?.add(const Duration(hours: 2)).minute)
+                            .toString()
+                            .padLeft(2, '0'))
+                  else
+                    const SizedBox()
+                ],
+              )),
             ),
-            subtitle: Center(
-                child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(partidos[i].time),
-                if (partidos[i].time == 'Not started')
-                  Text(' ' +
-                      (partidos[i].status?.add(const Duration(hours: 2)).hour)
-                          .toString() +
-                      ':' +
-                      (partidos[i].status?.add(const Duration(hours: 2)).minute)
-                          .toString()
-                          .padLeft(2, '0'))
-                else
-                  const SizedBox()
-              ],
-            )),
           );
         });
   }
