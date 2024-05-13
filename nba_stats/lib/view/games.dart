@@ -8,6 +8,7 @@ import 'package:nba_stats/controller/api_request.dart';
 import 'package:nba_stats/model/data.dart';
 
 import '../model/game.dart';
+import 'games_detail.dart';
 
 class Games extends StatefulWidget {
   const Games({super.key});
@@ -94,13 +95,20 @@ class _ListaPartidos extends StatelessWidget {
         itemBuilder: (BuildContext context, int i) {
           return Card(
             child: ListTile(
+              onTap: () {
+                cambiarPagina(context, partidos[i].id);
+              },
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  SizedBox(width: 6,),
+                  SizedBox(
+                    width: 6,
+                  ),
                   Container(
                       width: 50,
-                      decoration: BoxDecoration(shape: BoxShape.circle,),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                      ),
                       child: Image.asset('assets/img_teams/' +
                           partidos[i].visitorTeam.city +
                           ' ' +
@@ -114,9 +122,12 @@ class _ListaPartidos extends StatelessWidget {
                             '-' +
                             partidos[i].homeTeamScore.toString() +
                             ' ' +
-                            partidos[i].homeTeam.name + ' ')),
+                            partidos[i].homeTeam.name +
+                            ' ')),
                   ),
-                  SizedBox(width: 6,),
+                  SizedBox(
+                    width: 6,
+                  ),
                   Container(
                       width: 50,
                       decoration: BoxDecoration(shape: BoxShape.circle),
@@ -137,7 +148,10 @@ class _ListaPartidos extends StatelessWidget {
                         (partidos[i].status?.add(const Duration(hours: 2)).hour)
                             .toString() +
                         ':' +
-                        (partidos[i].status?.add(const Duration(hours: 2)).minute)
+                        (partidos[i]
+                                .status
+                                ?.add(const Duration(hours: 2))
+                                .minute)
                             .toString()
                             .padLeft(2, '0'))
                   else
@@ -147,5 +161,11 @@ class _ListaPartidos extends StatelessWidget {
             ),
           );
         });
+  }
+
+  cambiarPagina(BuildContext context, int idPartido) {
+    Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => game_detail(idPartido: idPartido),
+  ),);
   }
 }

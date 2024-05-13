@@ -11,6 +11,7 @@ import 'package:nba_stats/model/game.dart';
 import '../model/acceso.dart';
 import '../model/data.dart';
 import '../model/player.dart';
+import '../model/promedio.dart';
 import '../model/usuario.dart';
 
 //Clase que contiene los métodos necesarios para conectarse a la API
@@ -182,6 +183,31 @@ class ApiService {
     //Se devuelve la lista de partidos
     return List.empty();
   }
+
+  static Future<Promedio> getStatsByGame(int idPartido) async {
+    String url =
+        'https://api.balldontlie.io/v1/stats?game_ids[]=$idPartido';
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': '475f2ca9-26a3-4a5b-a3d8-2942adc3f3ad',
+        },
+      );
+      return promedioFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de partidos
+    return Promedio(data: []);
+  }
+
+   
+
+
 
 
 

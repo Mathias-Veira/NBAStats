@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nba_stats/view/games_detail.dart';
 
 
 import 'view/main_screen.dart';
@@ -27,6 +28,7 @@ class NbaStats extends StatelessWidget {
       initialRoute: '/home',
       routes: {
         '/home': (BuildContext context) => const MainScreen(),
+        '/game_detail': (BuildContext context) => const game_detail(idPartido: 0,),
       },
     );
   }

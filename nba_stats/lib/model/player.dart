@@ -36,19 +36,19 @@ class Jugador {
     });
 
     factory Jugador.fromJson(Map<String, dynamic> json) => Jugador(
-        idJugador: json["idJugador"],
-        idEquipo: json["idEquipo"],
-        nombreJugador: json["nombreJugador"],
-        apellidoJugador: json["apellidoJugador"],
-        posicionJugador: json["posicionJugador"],
-        alturaJugador: json["alturaJugador"],
-        pesoJugador: json["pesoJugador"],
-        numeroCamiseta: json["numeroCamiseta"],
-        universidad: json["universidad"],
-        procedenciaJugador: json["procedenciaJugador"],
-        anioDraft: json["anioDraft"],
-        rondaDraft: json["rondaDraft"],
-        numeroDraft: json["numeroDraft"],
+        idJugador: json["idJugador"]?? json["id"],
+        idEquipo: json["idEquipo"]??json[ "team_id"],
+        nombreJugador: json["nombreJugador"]?? json["first_name"],
+        apellidoJugador: json["apellidoJugador"] ?? json["last_name"],
+        posicionJugador: json["posicionJugador"] ?? json[ "position"],
+        alturaJugador: json["alturaJugador"] ?? json[ "height"],
+        pesoJugador: int.parse(json["pesoJugador"] ?? json["weight"]) ,
+        numeroCamiseta: int.parse(json["numeroCamiseta"] ?? json["jersey_number"]),
+        universidad: json["universidad"] ?? json["college"],
+        procedenciaJugador: json["procedenciaJugador"] ?? json["country"],
+        anioDraft: json["anioDraft"] ?? json[ "draft_year"]?? 0,
+        rondaDraft: json["rondaDraft"] ?? json["draft_round"]?? 0,
+        numeroDraft: json["numeroDraft"] ?? json["draft_number"] ?? 0,
     );
 
     Map<String, dynamic> toJson() => {
