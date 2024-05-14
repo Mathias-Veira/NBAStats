@@ -10,8 +10,10 @@ class Data {
   bool postseason;
   int homeTeamScore;
   int visitorTeamScore;
-  Team homeTeam;
-  Team visitorTeam;
+  Team? homeTeam;
+  Team? visitorTeam;
+  int? homeTeamId;
+  int? visitorTeamId;
 
   Data({
     required this.id,
@@ -23,8 +25,10 @@ class Data {
     required this.postseason,
     required this.homeTeamScore,
     required this.visitorTeamScore,
-    required this.homeTeam,
-    required this.visitorTeam,
+    this.homeTeam,
+    this.visitorTeam,
+    this.homeTeamId,
+    this.visitorTeamId
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -41,6 +45,20 @@ class Data {
         visitorTeam: Team.fromJson(json["visitor_team"]),
       );
 
+  factory Data.fromJsonStats(Map<String, dynamic> json) => Data(
+        id: json["id"],
+        date: DateTime.parse(json["date"]),
+        season: json["season"],
+        status: DateTime.tryParse(json["status"]),
+        period: json["period"],
+        time: json["time"] ?? "Not started",
+        postseason: json["postseason"],
+        homeTeamScore: json["home_team_score"],
+        visitorTeamScore: json["visitor_team_score"],
+        homeTeamId: json["home_team_id"],
+        visitorTeamId: json["visitor_team_id"],
+      );
+
   Map<String, dynamic> toJson() => {
         "id": id,
         "date":
@@ -52,7 +70,9 @@ class Data {
         "postseason": postseason,
         "home_team_score": homeTeamScore,
         "visitor_team_score": visitorTeamScore,
-        "home_team": homeTeam.toJson(),
-        "visitor_team": visitorTeam.toJson(),
+        "home_team": homeTeam?.toJson(),
+        "visitor_team": visitorTeam?.toJson(),
+        "home_team_id": homeTeamId,
+        "visitor_team_id": visitorTeamId,
       };
 }

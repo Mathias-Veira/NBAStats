@@ -28,7 +28,7 @@ class Average{
     int? pts;
     late Jugador player;
     late Team team;
-    late Game game;
+    late Data game;
 
     Average({
         required this.id,
@@ -79,7 +79,7 @@ class Average{
         pts: json["pts"] ?? 0,
         player: Jugador.fromJson(json["player"]),
         team: Team.fromJson(json["team"]),
-        game: Game.fromJson(json["game"]),
+        game: Data.fromJsonStats(json["game"]),
     );
 
     Map<String, dynamic> toJson() => {

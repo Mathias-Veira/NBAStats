@@ -110,19 +110,19 @@ class _ListaPartidos extends StatelessWidget {
                         shape: BoxShape.circle,
                       ),
                       child: Image.asset('assets/img_teams/' +
-                          partidos[i].visitorTeam.city +
+                          partidos[i].visitorTeam!.city +
                           ' ' +
-                          partidos[i].visitorTeam.name +
+                          partidos[i].visitorTeam!.name +
                           '.png')),
                   Expanded(
                     child: Center(
-                        child: Text(partidos[i].visitorTeam.name +
+                        child: Text(partidos[i].visitorTeam!.name +
                             ' ' +
                             partidos[i].visitorTeamScore.toString() +
                             '-' +
                             partidos[i].homeTeamScore.toString() +
                             ' ' +
-                            partidos[i].homeTeam.name +
+                            partidos[i].homeTeam!.name +
                             ' ')),
                   ),
                   SizedBox(
@@ -132,9 +132,9 @@ class _ListaPartidos extends StatelessWidget {
                       width: 50,
                       decoration: BoxDecoration(shape: BoxShape.circle),
                       child: Image.asset('assets/img_teams/' +
-                          partidos[i].homeTeam.city +
+                          partidos[i].homeTeam!.city +
                           ' ' +
-                          partidos[i].homeTeam.name +
+                          partidos[i].homeTeam!.name +
                           '.png')),
                 ],
               ),

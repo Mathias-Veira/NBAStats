@@ -12,7 +12,7 @@ class game_detail extends StatefulWidget {
 }
 
 class _game_detailState extends State<game_detail> {
-  String selectedTeam = "";
+  String? selectedTeam;
   Promedio promedios = Promedio(data: []);
   final int idPartido;
   _game_detailState({required this.idPartido});
@@ -28,11 +28,22 @@ class _game_detailState extends State<game_detail> {
     promedioTemporal = await ApiService.getStatsByGame(idPartido);
     setState(() {
       promedios = promedioTemporal;
+      if (promedios.data.isNotEmpty) {
+        final homeTeam = promedios.data[0].game.homeTeam;
+        final visitorTeam = promedios.data[0].game.visitorTeam;
+
+        // Verificar que homeTeam y visitorTeam no sean nulos
+        selectedTeam = homeTeam?.fullName ?? (visitorTeam?.fullName ?? 'Unknown Home Team');
+      }
     });
+    
+    
   }
 
   @override
   Widget build(BuildContext context) {
+    final homeTeamName = promedios.data.isNotEmpty ? promedios.data[0].game.homeTeam?.fullName ?? 'Unknown Home Team' : 'Loading Home Team...';
+    final visitorTeamName = promedios.data.isNotEmpty ? promedios.data[0].game.visitorTeam?.fullName ?? 'Unknown Visitor Team' : 'Loading Visitor Team...';
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -53,12 +64,9 @@ class _game_detailState extends State<game_detail> {
                         _loadGameDetails();
                       });
                     },
-                    items: (promedios.data.isNotEmpty &&
-                            promedios.data[0].game.data.isNotEmpty)
-                        ? <String>[
-                            promedios.data[0].game.data[0].homeTeam.toString(),
-                            promedios.data[0].game.data[0].visitorTeam.toString()
-                          ].map<DropdownMenuItem<String>>((String value) {
+                    
+                     items: promedios.data.isNotEmpty
+                        ? <String>[homeTeamName, visitorTeamName].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
