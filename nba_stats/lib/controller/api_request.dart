@@ -84,20 +84,17 @@ class ApiService {
   //Este método permite listar todos los mazos de un usuario en concreto
   static Future<List<Jugador>> listarJugadores() async {
     String url = '$baseUrl/players';
-    int statusCode = 0;
     List<Jugador> jugadores = [];
     try {
       //Se realiza la petición get al endpoint
-      http.Response response = await http.get(Uri.parse(url));
-      List<dynamic> jsonData = json.decode(response.body);
-      jugadores = jsonData.map((item) => Jugador.fromJson(item)).toList();
-      statusCode = response.statusCode;
-      //Se verifica si el código de respuesta es un 200
-      if (statusCode == 200) {
-        print('listar mazos OK');
-      } else {
-        print('Error al listar mazos: $statusCode');
-      }
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      return jugadorListFromJson(response.body);
     } catch (e) {
       print('Error conexión: $e');
     }
@@ -180,7 +177,7 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
+    //Se devuelve la lista de rankings
     return List.empty();
   }
 

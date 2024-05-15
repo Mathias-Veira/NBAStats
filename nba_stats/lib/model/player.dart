@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 List<Jugador> jugadorFromJson(String str) => List<Jugador>.from(json.decode(str).map((x) => Jugador.fromJson(x)));
+List<Jugador> jugadorListFromJson(String str) => List<Jugador>.from(json.decode(str).map((x) => Jugador.listFromJson(x)));
 
 String jugadorToJson(List<Jugador> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -44,6 +45,22 @@ class Jugador {
         alturaJugador: json["alturaJugador"] ?? json[ "height"],
         pesoJugador: int.parse(json["pesoJugador"] ?? json["weight"]) ,
         numeroCamiseta: int.parse(json["numeroCamiseta"] ?? json["jersey_number"]),
+        universidad: json["universidad"] ?? json["college"],
+        procedenciaJugador: json["procedenciaJugador"] ?? json["country"],
+        anioDraft: json["anioDraft"] ?? json[ "draft_year"]?? 0,
+        rondaDraft: json["rondaDraft"] ?? json["draft_round"]?? 0,
+        numeroDraft: json["numeroDraft"] ?? json["draft_number"] ?? 0,
+    );
+
+     factory Jugador.listFromJson(Map<String, dynamic> json) => Jugador(
+        idJugador: json["idJugador"]?? json["id"],
+        idEquipo: json["idEquipo"]??json[ "team_id"],
+        nombreJugador: json["nombreJugador"]?? json["first_name"],
+        apellidoJugador: json["apellidoJugador"] ?? json["last_name"],
+        posicionJugador: json["posicionJugador"] ?? json[ "position"],
+        alturaJugador: json["alturaJugador"] ?? json[ "height"],
+        pesoJugador: json["pesoJugador"] is int ? json["pesoJugador"] : int.parse(json["pesoJugador"]?.toString() ?? json["weight"]?.toString() ?? '0'),
+        numeroCamiseta: json["numeroCamiseta"] is int ? json["numeroCamiseta"]: int.parse(json["numeroCamiseta"].toString() ?? json["jersey_number"].toString() ?? '0'),
         universidad: json["universidad"] ?? json["college"],
         procedenciaJugador: json["procedenciaJugador"] ?? json["country"],
         anioDraft: json["anioDraft"] ?? json[ "draft_year"]?? 0,

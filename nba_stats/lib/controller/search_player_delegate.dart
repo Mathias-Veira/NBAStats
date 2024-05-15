@@ -34,7 +34,17 @@ class SearchPlayerDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Center();
+    return ListView.builder(
+        itemCount: _filter.length,
+        itemBuilder: (_, index) {
+          return Card(
+            child: ListTile(
+              title: Text(_filter[index].nombreJugador +
+                  ' ' +
+                  _filter[index].apellidoJugador),
+            ),
+          );
+        });
   }
 
   @override
@@ -53,7 +63,6 @@ class SearchPlayerDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-            
               title: Text(_filter[index].nombreJugador +
                   ' ' +
                   _filter[index].apellidoJugador),
