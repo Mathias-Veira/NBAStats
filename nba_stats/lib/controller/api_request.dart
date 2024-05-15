@@ -11,7 +11,7 @@ import 'package:nba_stats/model/game.dart';
 import '../model/acceso.dart';
 import '../model/data.dart';
 import '../model/player.dart';
-import '../model/promedio.dart';
+import '../model/estadistica.dart';
 import '../model/usuario.dart';
 
 //Clase que contiene los métodos necesarios para conectarse a la API
@@ -132,7 +132,7 @@ class ApiService {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-        },     
+        },
       );
       return equipoFromJson(response.body);
     } catch (e) {
@@ -142,7 +142,7 @@ class ApiService {
     return List.empty();
   }
 
-   static Future<List<Equipo>> getRankingByConference(String conference) async {
+  static Future<List<Equipo>> getRankingByConference(String conference) async {
     String url = '$baseUrl/ranking/$conference';
     try {
       //Se realiza la petición get al endpoint
@@ -151,7 +151,7 @@ class ApiService {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-        },     
+        },
       );
       return equipoFromJson(response.body);
     } catch (e) {
@@ -161,8 +161,7 @@ class ApiService {
     return List.empty();
   }
 
-  
-   static Future<List<Equipo>> getRankingByDivision(String division) async {
+  static Future<List<Equipo>> getRankingByDivision(String division) async {
     String url = '$baseUrl/ranking/division/$division';
     try {
       //Se realiza la petición get al endpoint
@@ -171,7 +170,7 @@ class ApiService {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-        },     
+        },
       );
       return equipoFromJson(response.body);
     } catch (e) {
@@ -181,9 +180,8 @@ class ApiService {
     return List.empty();
   }
 
-  static Future<Promedio> getStatsByGame(int idPartido) async {
-    String url =
-        'https://api.balldontlie.io/v1/stats?game_ids[]=$idPartido';
+  static Future<Estadistica> getStatsByGame(int idPartido) async {
+    String url = 'https://api.balldontlie.io/v1/stats?game_ids[]=$idPartido';
     try {
       //Se realiza la petición get al endpoint
       http.Response response = await http.get(
@@ -199,14 +197,6 @@ class ApiService {
       print('Error conexión: $e');
     }
     //Se devuelve la lista de partidos
-    return Promedio(data: []);
+    return Estadistica(data: []);
   }
-
-   
-
-
-
-
-
-
 }

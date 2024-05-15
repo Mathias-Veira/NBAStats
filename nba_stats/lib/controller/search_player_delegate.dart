@@ -65,7 +65,7 @@ class SearchPlayerDelegate extends SearchDelegate {
             child: ListTile(
               title: Text(_filter[index].nombreJugador +
                   ' ' +
-                  _filter[index].apellidoJugador),
+                  _filter[index].apellidoJugador + " PTS: "),
             ),
           );
         });

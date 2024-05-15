@@ -6,58 +6,59 @@ import 'equipo.dart';
 import 'game.dart';
 import 'player.dart';
 import 'team.dart';
-class Average{
-    int id;
-    String? min;
-    int? fgm;
-    int? fga;
-    double? fgPct;
-    int? fg3M;
-    int? fg3A;
-    double? fg3Pct;
-    int? ftm;
-    int? fta;
-    double? ftPct;
-    int? oreb;
-    int? dreb;
-    int? reb;
-    int? ast;
-    int? stl;
-    int? blk;
-    int? turnover;
-    int? pf;
-    int? pts;
-    late Jugador player;
-    late Team team;
-    late Data game;
 
-    Average({
-        required this.id,
-        required this.min,
-        required this.fgm,
-        required this.fga,
-        required this.fgPct,
-        required this.fg3M,
-        required this.fg3A,
-        required this.fg3Pct,
-        required this.ftm,
-        required this.fta,
-        required this.ftPct,
-        required this.oreb,
-        required this.dreb,
-        required this.reb,
-        required this.ast,
-        required this.stl,
-        required this.blk,
-        required this.turnover,
-        required this.pf,
-        required this.pts,
-        required this.player,
-        required this.team,
-        required this.game,
-    });
+class Stat {
+  int id;
+  String? min;
+  int? fgm;
+  int? fga;
+  double? fgPct;
+  int? fg3M;
+  int? fg3A;
+  double? fg3Pct;
+  int? ftm;
+  int? fta;
+  double? ftPct;
+  int? oreb;
+  int? dreb;
+  int? reb;
+  int? ast;
+  int? stl;
+  int? blk;
+  int? turnover;
+  int? pf;
+  int? pts;
+  late Jugador player;
+  late Team team;
+  late Data game;
 
-    factory Average.fromJson(Map<String, dynamic> json) => Average(
+  Stat({
+    required this.id,
+    required this.min,
+    required this.fgm,
+    required this.fga,
+    required this.fgPct,
+    required this.fg3M,
+    required this.fg3A,
+    required this.fg3Pct,
+    required this.ftm,
+    required this.fta,
+    required this.ftPct,
+    required this.oreb,
+    required this.dreb,
+    required this.reb,
+    required this.ast,
+    required this.stl,
+    required this.blk,
+    required this.turnover,
+    required this.pf,
+    required this.pts,
+    required this.player,
+    required this.team,
+    required this.game,
+  });
+
+  factory Stat.fromJson(Map<String, dynamic> json) => Stat(
         id: json["id"],
         min: json["min"] ?? "0",
         fgm: json["fgm"] ?? 0,
@@ -65,7 +66,7 @@ class Average{
         fgPct: json["fg_pct"]?.toDouble() * 100 ?? 0.0,
         fg3M: json["fg3m"] ?? 0,
         fg3A: json["fg3a"] ?? 0,
-        fg3Pct:json["fg3_pct"]?.toDouble() * 100 ?? 0.0,
+        fg3Pct: json["fg3_pct"]?.toDouble() * 100 ?? 0.0,
         ftm: json["ftm"] ?? 0,
         fta: json["fta"] ?? 0,
         ftPct: json["ft_pct"]?.toDouble() * 100 ?? 0.0,
@@ -81,9 +82,9 @@ class Average{
         player: Jugador.fromJson(json["player"]),
         team: Team.fromJson(json["team"]),
         game: Data.fromJsonStats(json["game"]),
-    );
+      );
 
-    Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => {
         "id": id,
         "min": min,
         "fgm": fgm,
@@ -107,5 +108,5 @@ class Average{
         "player": player.toJson(),
         "team": team.toJson(),
         "game": game.toJson(),
-    };
+      };
 }

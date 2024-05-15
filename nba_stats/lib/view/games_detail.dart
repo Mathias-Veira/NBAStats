@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 import '../controller/api_request.dart';
-import '../model/promedio.dart';
+import '../model/estadistica.dart';
 
 class game_detail extends StatefulWidget {
   final int idPartido;
@@ -14,7 +14,7 @@ class game_detail extends StatefulWidget {
 }
 
 class _game_detailState extends State<game_detail> {
-  Promedio promedios = Promedio(data: []);
+  Estadistica promedios = Estadistica(data: []);
   final int idPartido;
   _game_detailState({required this.idPartido});
   @override
@@ -25,7 +25,7 @@ class _game_detailState extends State<game_detail> {
 
   // Función para cargar las estadisticas de los jugadores
   void _loadGameDetails() async {
-    Promedio promedioTemporal = Promedio(data: []);
+    Estadistica promedioTemporal = Estadistica(data: []);
     promedioTemporal = await ApiService.getStatsByGame(idPartido);
     promedioTemporal = ordenarPromedios(promedioTemporal);
     setState(() {
@@ -33,8 +33,8 @@ class _game_detailState extends State<game_detail> {
     });
   }
 
-  Promedio ordenarPromedios(Promedio promedioTemporal) {
-    Promedio promedioOrdenado = Promedio(data: []);
+  Estadistica ordenarPromedios(Estadistica promedioTemporal) {
+    Estadistica promedioOrdenado = Estadistica(data: []);
     promedioTemporal.data.sort((promedioA, promedioB) {
       int teamComparison = promedioA.team.name.compareTo(promedioB.team.name);
       if (teamComparison != 0) {
@@ -48,8 +48,9 @@ class _game_detailState extends State<game_detail> {
     return promedioOrdenado;
   }
 
-  double truncateToDecimalPlaces(num value, int fractionalDigits) => (value * pow(10, 
-   fractionalDigits)).truncate() / pow(10, fractionalDigits);
+  double truncateToDecimalPlaces(num value, int fractionalDigits) =>
+      (value * pow(10, fractionalDigits)).truncate() /
+      pow(10, fractionalDigits);
 
   @override
   Widget build(BuildContext context) {
@@ -104,13 +105,19 @@ class _game_detailState extends State<game_detail> {
                             DataCell(Text(promedio.blk.toString())),
                             DataCell(Text(promedio.fgm.toString())),
                             DataCell(Text(promedio.fga.toString())),
-                            DataCell(Text((truncateToDecimalPlaces(promedio.fgPct!, 1)).toString())),
+                            DataCell(Text(
+                                (truncateToDecimalPlaces(promedio.fgPct!, 1))
+                                    .toString())),
                             DataCell(Text(promedio.fg3M.toString())),
                             DataCell(Text(promedio.fg3A.toString())),
-                            DataCell(Text((truncateToDecimalPlaces(promedio.fg3Pct!, 1)).toString())),
+                            DataCell(Text(
+                                (truncateToDecimalPlaces(promedio.fg3Pct!, 1))
+                                    .toString())),
                             DataCell(Text(promedio.ftm.toString())),
                             DataCell(Text(promedio.fta.toString())),
-                            DataCell(Text((truncateToDecimalPlaces(promedio.ftPct!, 1)).toString())),
+                            DataCell(Text(
+                                (truncateToDecimalPlaces(promedio.ftPct!, 1))
+                                    .toString())),
                             DataCell(Text(promedio.oreb.toString())),
                             DataCell(Text(promedio.dreb.toString())),
                             DataCell(Text(promedio.turnover.toString())),
