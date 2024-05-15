@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'data.dart';
 import 'equipo.dart';
@@ -58,13 +59,13 @@ class Average{
 
     factory Average.fromJson(Map<String, dynamic> json) => Average(
         id: json["id"],
-        min: json["min"] ?? "00:00",
+        min: json["min"] ?? "0",
         fgm: json["fgm"] ?? 0,
         fga: json["fga"] ?? 0,
         fgPct: json["fg_pct"]?.toDouble() ?? 0.0,
         fg3M: json["fg3m"] ?? 0,
         fg3A: json["fg3a"] ?? 0,
-        fg3Pct: json["fg3_pct"]?.toDouble() ?? 0.0,
+        fg3Pct:json["fg3_pct"]?.toDouble() ?? 0.0,
         ftm: json["ftm"] ?? 0,
         fta: json["fta"] ?? 0,
         ftPct: json["ft_pct"]?.toDouble() ?? 0.0,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 import '../controller/api_request.dart';
@@ -26,6 +28,7 @@ class _game_detailState extends State<game_detail> {
   void _loadGameDetails() async {
     Promedio promedioTemporal = Promedio(data: []);
     promedioTemporal = await ApiService.getStatsByGame(idPartido);
+    promedioTemporal = ordenarPromedios(promedioTemporal);
     setState(() {
       promedios = promedioTemporal;
       if (promedios.data.isNotEmpty) {
@@ -33,17 +36,29 @@ class _game_detailState extends State<game_detail> {
         final visitorTeam = promedios.data[0].game.visitorTeam;
 
         // Verificar que homeTeam y visitorTeam no sean nulos
-        selectedTeam = homeTeam?.fullName ?? (visitorTeam?.fullName ?? 'Unknown Home Team');
+        selectedTeam = homeTeam?.fullName ??
+            (visitorTeam?.fullName ?? 'Unknown Home Team');
       }
     });
-    
-    
+  }
+
+  Promedio ordenarPromedios(Promedio promedioTemporal) {
+    Promedio promedioOrdenado = Promedio(data: []);
+    promedioTemporal.data.sort((promedioA, promedioB) {
+      int teamComparison = promedioA.team.name.compareTo(promedioB.team.name);
+      if (teamComparison != 0) {
+        return teamComparison;
+      } else {
+        return -promedioA.min!.compareTo(promedioB.min!);
+      }
+    });
+
+    promedioOrdenado = promedioTemporal;
+    return promedioOrdenado;
   }
 
   @override
   Widget build(BuildContext context) {
-    final homeTeamName = promedios.data.isNotEmpty ? promedios.data[0].game.homeTeam?.fullName ?? 'Unknown Home Team' : 'Loading Home Team...';
-    final visitorTeamName = promedios.data.isNotEmpty ? promedios.data[0].game.visitorTeam?.fullName ?? 'Unknown Visitor Team' : 'Loading Visitor Team...';
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -55,31 +70,13 @@ class _game_detailState extends State<game_detail> {
               Row(
                 children: [
                   Padding(padding: EdgeInsets.only(left: 25.0)),
-                  Text("Choose Team: "),
-                  DropdownButton<String>(
-                    value: selectedTeam,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedTeam = value!;
-                        _loadGameDetails();
-                      });
-                    },
-                    
-                     items: promedios.data.isNotEmpty
-                        ? <String>[homeTeamName, visitorTeamName].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList()
-                        : [],
-                  ),
                 ],
               ),
               DataTable(
                   columnSpacing: 15.5,
                   columns: const [
                     DataColumn(label: Text("Jugadores")),
+                    DataColumn(label: Text("Equipo")),
                     DataColumn(label: Text("MIN")),
                     DataColumn(label: Text("PTS")),
                     DataColumn(label: Text("REB")),
@@ -104,6 +101,7 @@ class _game_detailState extends State<game_detail> {
                       .map((promedio) => DataRow(cells: [
                             DataCell(Text(
                                 "${promedio.player.nombreJugador} ${promedio.player.apellidoJugador} ${promedio.player.posicionJugador}")),
+                            DataCell(Text("${promedio.team.name}")),
                             DataCell(Text(promedio.min.toString())),
                             DataCell(Text(promedio.pts.toString())),
                             DataCell(Text(promedio.reb.toString())),
@@ -112,13 +110,13 @@ class _game_detailState extends State<game_detail> {
                             DataCell(Text(promedio.blk.toString())),
                             DataCell(Text(promedio.fgm.toString())),
                             DataCell(Text(promedio.fga.toString())),
-                            DataCell(Text(promedio.fgPct.toString())),
+                            DataCell(Text((promedio.fgPct!* 100).toString())),
                             DataCell(Text(promedio.fg3M.toString())),
                             DataCell(Text(promedio.fg3A.toString())),
-                            DataCell(Text(promedio.fg3Pct.toString())),
+                            DataCell(Text((promedio.fg3Pct! * 100).toString())),
                             DataCell(Text(promedio.ftm.toString())),
                             DataCell(Text(promedio.fta.toString())),
-                            DataCell(Text(promedio.ftPct.toString())),
+                            DataCell(Text((promedio.ftPct! * 100).toString())),
                             DataCell(Text(promedio.oreb.toString())),
                             DataCell(Text(promedio.dreb.toString())),
                             DataCell(Text(promedio.turnover.toString())),
