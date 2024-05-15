@@ -14,7 +14,6 @@ class game_detail extends StatefulWidget {
 }
 
 class _game_detailState extends State<game_detail> {
-  String? selectedTeam;
   Promedio promedios = Promedio(data: []);
   final int idPartido;
   _game_detailState({required this.idPartido});
@@ -31,14 +30,6 @@ class _game_detailState extends State<game_detail> {
     promedioTemporal = ordenarPromedios(promedioTemporal);
     setState(() {
       promedios = promedioTemporal;
-      if (promedios.data.isNotEmpty) {
-        final homeTeam = promedios.data[0].game.homeTeam;
-        final visitorTeam = promedios.data[0].game.visitorTeam;
-
-        // Verificar que homeTeam y visitorTeam no sean nulos
-        selectedTeam = homeTeam?.fullName ??
-            (visitorTeam?.fullName ?? 'Unknown Home Team');
-      }
     });
   }
 
@@ -56,6 +47,9 @@ class _game_detailState extends State<game_detail> {
     promedioOrdenado = promedioTemporal;
     return promedioOrdenado;
   }
+
+  double truncateToDecimalPlaces(num value, int fractionalDigits) => (value * pow(10, 
+   fractionalDigits)).truncate() / pow(10, fractionalDigits);
 
   @override
   Widget build(BuildContext context) {
@@ -110,13 +104,13 @@ class _game_detailState extends State<game_detail> {
                             DataCell(Text(promedio.blk.toString())),
                             DataCell(Text(promedio.fgm.toString())),
                             DataCell(Text(promedio.fga.toString())),
-                            DataCell(Text((promedio.fgPct!* 100).toString())),
+                            DataCell(Text((truncateToDecimalPlaces(promedio.fgPct!, 1)).toString())),
                             DataCell(Text(promedio.fg3M.toString())),
                             DataCell(Text(promedio.fg3A.toString())),
-                            DataCell(Text((promedio.fg3Pct! * 100).toString())),
+                            DataCell(Text((truncateToDecimalPlaces(promedio.fg3Pct!, 1)).toString())),
                             DataCell(Text(promedio.ftm.toString())),
                             DataCell(Text(promedio.fta.toString())),
-                            DataCell(Text((promedio.ftPct! * 100).toString())),
+                            DataCell(Text((truncateToDecimalPlaces(promedio.ftPct!, 1)).toString())),
                             DataCell(Text(promedio.oreb.toString())),
                             DataCell(Text(promedio.dreb.toString())),
                             DataCell(Text(promedio.turnover.toString())),
