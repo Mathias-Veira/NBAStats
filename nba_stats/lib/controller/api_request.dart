@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:nba_stats/model/equipo.dart';
 import 'package:nba_stats/model/game.dart';
+import 'package:nba_stats/model/promedio_jugadores.dart';
 
 import '../model/acceso.dart';
 import '../model/data.dart';
@@ -198,5 +199,26 @@ class ApiService {
     }
     //Se devuelve la lista de partidos
     return Estadistica(data: []);
+  }
+
+  static Future<List<PromedioJugadores>> getStats() async {
+    String url = '$baseUrl/stats';
+    List<PromedioJugadores> promedio = [];
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      return promedioJugadoresFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de partidos
+    return promedio;
   }
 }
