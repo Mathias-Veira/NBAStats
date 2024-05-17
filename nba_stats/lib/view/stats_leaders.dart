@@ -28,11 +28,18 @@ class _stats_leadersState extends State<stats_leaders> {
     });
   }
 
+  cambiarPagina(BuildContext context) {
+    Navigator.of(context).pushNamed('/home');
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> listIDs = List<String>.generate(11, (counter) => "$counter");
     int i = 1;
     return Scaffold(
+      appBar: AppBar(
+        leading: InkWell(child: Icon(Icons.arrow_back), onTap: () => cambiarPagina(context),),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: SingleChildScrollView(
