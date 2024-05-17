@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:nba_stats/view/standings.dart';
 
 import 'games.dart';
@@ -13,6 +14,11 @@ class MainScreen extends StatefulWidget {
 
 class _HomeState extends State<MainScreen> {
   int selectedIndex = 0;
+
+  cambiarPagina(BuildContext context) {
+    Navigator.of(context).pushNamed('/statsLeaders');
+  }
+
   @override
   Widget build(BuildContext context) {
     final screens = [
@@ -22,9 +28,64 @@ class _HomeState extends State<MainScreen> {
       const Players(),
     ];
     return Scaffold(
+      appBar: AppBar(
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: const Icon(
+              Icons.menu,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
+      ),
       body: IndexedStack(
         index: selectedIndex,
         children: screens,
+      ),
+      drawer: Drawer(
+        backgroundColor: Colors.teal[200],
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: Colors.teal[100]),
+              accountName: const Text(
+                'Mathias',
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              accountEmail: const Text(''),
+              currentAccountPictureSize: const Size(55, 55),
+              currentAccountPicture: Container(
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: Colors.grey,
+                ),
+                child: const Center(
+                  child: Icon(
+                    Icons.person,
+                    size: 40,
+                  ),
+                ),
+              ),
+            ),
+            ListTile(
+              title: const Text(
+                "Stats Leaders",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+              onTap:() => cambiarPagina(context),
+            )
+          ],
+        ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         fixedColor: Colors.white,

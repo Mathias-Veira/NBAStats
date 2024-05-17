@@ -221,4 +221,29 @@ class ApiService {
     //Se devuelve la lista de partidos
     return promedio;
   }
+
+
+  static Future<List<PromedioJugadores>> getPromedioByStat(String stat) async {
+    String url = '$baseUrl/stats/$stat';
+    List<PromedioJugadores> promedio = [];
+    if(stat == "None"){
+      return promedio;
+    }
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+
+      return promedioJugadoresFromJsonStats(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de partidos
+    return promedio;
+  }
 }
