@@ -4,6 +4,7 @@ import 'package:nba_stats/view/games_detail.dart';
 
 
 import 'view/main_screen.dart';
+import 'view/playoff_series.dart';
 import 'view/stats_leaders.dart';
 
 void main()  {
@@ -31,6 +32,7 @@ class NbaStats extends StatelessWidget {
         '/home': (BuildContext context) => const MainScreen(),
         '/game_detail': (BuildContext context) => const game_detail(idPartido: 0,),
         '/statsLeaders':(BuildContext context) => const stats_leaders(),
+        '/playoffsSeries':(BuildContext context) => const playoff_series(),
       },
     );
   }

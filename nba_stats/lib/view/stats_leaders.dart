@@ -59,7 +59,7 @@ class _stats_leadersState extends State<stats_leaders> {
                         _loadStats();
                       });
                     },
-                    items: <String>['None', 'pts', 'ast', 'reb', 'tov', 'stl', 'blk']
+                    items: <String>['None', 'Puntos', 'Asistencias', 'Rebotes', 'Pérdidas', 'Robos', 'Tapones']
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,

@@ -222,11 +222,32 @@ class ApiService {
     return promedio;
   }
 
-
   static Future<List<PromedioJugadores>> getPromedioByStat(String stat) async {
-    String url = '$baseUrl/stats/$stat';
+    String url = '';
+    switch (stat) {
+      case 'Puntos':
+        url = '$baseUrl/stats/pts';
+        break;
+      case 'Asistencias':
+        url = '$baseUrl/stats/ast';
+        break;
+      case 'Rebotes':
+        url = '$baseUrl/stats/reb';
+        break;
+      case 'Pérdidas':
+        url = '$baseUrl/stats/tov';
+        break;
+      case 'Robos':
+        url = '$baseUrl/stats/stl';
+        break;
+      case 'Tapones':
+        url = '$baseUrl/stats/blk';
+        break;
+      default:
+        print('Opción no reconocida');
+    }
     List<PromedioJugadores> promedio = [];
-    if(stat == "None"){
+    if (stat == "None") {
       return promedio;
     }
     try {
@@ -245,5 +266,24 @@ class ApiService {
     }
     //Se devuelve la lista de partidos
     return promedio;
+  }
+
+  static Future<Game> getPlayOffGames() async {
+    String url = 'https://api.balldontlie.io/v1/games?postseason=true&seasons[]=2023&per_page=100';
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': '475f2ca9-26a3-4a5b-a3d8-2942adc3f3ad',
+        },
+      );
+      return gameFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    return Game(data: []);
   }
 }

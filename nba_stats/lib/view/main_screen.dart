@@ -15,8 +15,8 @@ class MainScreen extends StatefulWidget {
 class _HomeState extends State<MainScreen> {
   int selectedIndex = 0;
 
-  cambiarPagina(BuildContext context) {
-    Navigator.of(context).pushNamed('/statsLeaders');
+  cambiarPagina(BuildContext context, String route) {
+    Navigator.of(context).pushNamed(route);
   }
 
   @override
@@ -82,7 +82,19 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap:() => cambiarPagina(context),
+              onTap:() => cambiarPagina(context,'/statsLeaders'),
+            ),
+            ListTile(
+              title: const Text(
+                "PlayOffs Series",
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+              onTap:() => cambiarPagina(context,'/playoffsSeries'),
             )
           ],
         ),

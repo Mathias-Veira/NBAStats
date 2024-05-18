@@ -99,13 +99,11 @@ class _ListaPartidos extends StatelessWidget {
                 cambiarPagina(context, partidos[i].id);
               },
               title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 6,
-                  ),
+                  
                   Container(
-                      width: 50,
+                      width: 45,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),
@@ -125,9 +123,7 @@ class _ListaPartidos extends StatelessWidget {
                             partidos[i].homeTeam!.name +
                             ' ')),
                   ),
-                  SizedBox(
-                    width: 6,
-                  ),
+                  
                   Container(
                       width: 50,
                       decoration: BoxDecoration(shape: BoxShape.circle),
