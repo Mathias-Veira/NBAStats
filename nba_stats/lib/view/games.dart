@@ -103,7 +103,7 @@ class _ListaPartidos extends StatelessWidget {
                 children: [
                   
                   Container(
-                      width: 45,
+                      width: 50,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                       ),

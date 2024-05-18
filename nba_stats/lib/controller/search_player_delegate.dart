@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nba_stats/controller/api_request.dart';
+import 'package:nba_stats/model/equipo.dart';
 import 'package:nba_stats/model/promedio_jugadores.dart';
 
 import '../model/player.dart';
@@ -9,6 +10,7 @@ class SearchPlayerDelegate extends SearchDelegate {
   List<Jugador> _filter = [];
   SearchPlayerDelegate(this.players);
   List<PromedioJugadores> promedios = [];
+  List<Equipo> equipos = [];
 
   void getPlayers() async {
     players = await ApiService.listarJugadores();
@@ -18,32 +20,42 @@ class SearchPlayerDelegate extends SearchDelegate {
     promedios = await ApiService.getStats();
   }
 
-  double findStat(int jugadorId, String statName){
+  void getAllTeams() async {
+    equipos = await ApiService.getAllTeams();
+  }
+
+  String getTeamByPlayerId(int teamId) {
+    for (var equipo in equipos) {
+      if (equipo.idEquipo == teamId) {
+        return equipo.nombreEquipo;
+      }
+    }
+    return '';
+  }
+
+  double findStat(int jugadorId, String statName) {
     for (var i = 0; i < promedios.length; i++) {
-      if(promedios[i].idJugador == jugadorId){
-          switch (statName) {
-              case 'pts':
-                return promedios[i].puntosPorPartido;
-              case 'ast':
-                return promedios[i].asistenciasPorPartido;
-              case 'reb':
-                return promedios[i].rebotesPorPartido;
-              case 'tov':
-                return promedios[i].perdidasPorPartido;  
-              case 'stl':
-                return promedios[i].robosPorPartido; 
-              case 'blk':
-                return promedios[i].taponesPorPartido;  
-              default:
-                print('Opción no reconocida');
-          }
-          
+      if (promedios[i].idJugador == jugadorId) {
+        switch (statName) {
+          case 'pts':
+            return promedios[i].puntosPorPartido;
+          case 'ast':
+            return promedios[i].asistenciasPorPartido;
+          case 'reb':
+            return promedios[i].rebotesPorPartido;
+          case 'tov':
+            return promedios[i].perdidasPorPartido;
+          case 'stl':
+            return promedios[i].robosPorPartido;
+          case 'blk':
+            return promedios[i].taponesPorPartido;
+          default:
+            return 0.0;
+         }
       }
     }
     return 0.0;
   }
-
-
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -51,7 +63,7 @@ class SearchPlayerDelegate extends SearchDelegate {
           onPressed: () {
             query = '';
           },
-          icon: Icon(Icons.close))
+          icon: const Icon(Icons.close))
     ];
   }
 
@@ -61,7 +73,7 @@ class SearchPlayerDelegate extends SearchDelegate {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        icon: Icon(Icons.arrow_back));
+        icon: const Icon(Icons.arrow_back));
   }
 
   @override
@@ -71,11 +83,10 @@ class SearchPlayerDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              title: Text(_filter[index].nombreJugador +
-                  ' ' +
-                  _filter[index].apellidoJugador),
-
-              subtitle: Text("Puntos: " + findStat(_filter[index].idJugador, "pts").toString() + "\n" + "Asistencias: " + findStat(_filter[index].idJugador, "ast").toString() +"\n" + "Rebotes: " + findStat(_filter[index].idJugador, "reb").toString() + "\n" +"Pérdidas: " + findStat(_filter[index].idJugador, "tov").toString() + "\n" +"Robos: " + findStat(_filter[index].idJugador, "stl").toString() + "\n" +"Tapones: " + findStat(_filter[index].idJugador, "blk").toString()),
+              title: Text(
+                  '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador}'),
+              subtitle: Text(
+                  "Puntos: ${findStat(_filter[index].idJugador, "pts")}\nAsistencias: ${findStat(_filter[index].idJugador, "ast")}\nRebotes: ${findStat(_filter[index].idJugador, "reb")}\nPérdidas: ${findStat(_filter[index].idJugador, "tov")}\nRobos: ${findStat(_filter[index].idJugador, "stl")}\nTapones: ${findStat(_filter[index].idJugador, "blk")}"),
             ),
           );
         });
@@ -85,6 +96,7 @@ class SearchPlayerDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     getPlayers();
     getStats();
+    getAllTeams();
     _filter = players.where((element) {
       return element.nombreJugador
               .toLowerCase()
@@ -98,11 +110,13 @@ class SearchPlayerDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              title: Text(_filter[index].nombreJugador +
-                  ' ' +
-                  _filter[index].apellidoJugador, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-
-              subtitle: Text("Puntos: " + findStat(_filter[index].idJugador, "pts").toString() + "\n" + "Asistencias: " + findStat(_filter[index].idJugador, "ast").toString() +"\n" + "Rebotes: " + findStat(_filter[index].idJugador, "reb").toString() + "\n" +"Pérdidas: " + findStat(_filter[index].idJugador, "tov").toString() + "\n" +"Robos: " + findStat(_filter[index].idJugador, "stl").toString() + "\n" +"Tapones: " + findStat(_filter[index].idJugador, "blk").toString()),
+              title: Text(
+                '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador} ${getTeamByPlayerId(_filter[index].idEquipo)}',
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              subtitle: Text(
+                  "Puntos: ${findStat(_filter[index].idJugador, "pts")}\nAsistencias: ${findStat(_filter[index].idJugador, "ast")}\nRebotes: ${findStat(_filter[index].idJugador, "reb")}\nPérdidas: ${findStat(_filter[index].idJugador, "tov")}\nRobos: ${findStat(_filter[index].idJugador, "stl")}\nTapones: ${findStat(_filter[index].idJugador, "blk")}"),
             ),
           );
         });

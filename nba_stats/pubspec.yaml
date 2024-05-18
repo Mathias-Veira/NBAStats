@@ -29,7 +29,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   flutter:
-    sdk: flutter
+    sdk: flutter  
   date_picker_timeline: ^1.2.6
   flutter_dotenv: ^5.0.2  
 
