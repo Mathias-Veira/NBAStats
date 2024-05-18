@@ -12,7 +12,8 @@ class playoff_series extends StatefulWidget {
 
 class _playoff_seriesState extends State<playoff_series> {
   Game partidos = Game(data: []);
-
+  Game partidosVerificados = Game(data: []);
+  int i = 0;
   @override
   void initState() {
     super.initState();
@@ -27,25 +28,37 @@ class _playoff_seriesState extends State<playoff_series> {
     });
   }
 
+  void executeAfterBuild() {
+    partidosVerificados.data.add(partidos.data[i]);
+  }
+
   @override
   Widget build(BuildContext context) {
     List<int> res = [];
     return ListView.builder(
         itemCount: partidos.data.length,
         itemBuilder: (context, index) {
+          i = index;
           //partidos es el objeto Game con todos los partidos de la postemporada
           //index es el índice del partido que se va a mostrar
           res = calcularResultadoSerie(index, partidos);
-          return Card(
+          if (partidosVerificados.data.contains(partidos.data[index])) {
+            return const SizedBox.shrink();
+          }
+
+          Widget carta = Card(
             child: ListTile(
               title: Text(
                   "${partidos.data[index].homeTeam!.name} ${res[0]} - ${res[1]} ${partidos.data[index].visitorTeam!.name}"),
             ),
           );
+          executeAfterBuild();
+          return carta;
         });
   }
 }
-// Este método calcula los resultados de las series de playOffs recorriendo la lista de partidos de la postemporada sacados de una api
+
+// Este método calcula los resultados de las series de playOffs recorriendo la lista de partidos de la postemporada sacados de una API.
 List<int> calcularResultadoSerie(int index, Game game) {
   //lista en la que se guarda el resultado de la serie
   List<int> res = [];
@@ -55,7 +68,7 @@ List<int> calcularResultadoSerie(int index, Game game) {
   int contadorVisitorTeam = 0;
   //recorremos la lista de partidos
   for (var i = 0; i < game.data.length; i++) {
-    //Primero comprobamos que el nombre del equipo local y visitante sean el mismo que el nombre del equipo local y visitante en el índice index(el partido que se está mostrando en la interfaz)
+    // Primero comprobamos que el nombre del equipo local y visitante sean el mismo que el nombre del equipo local y visitante en el índice index (el partido que se está mostrando en la interfaz).
     //También se comprueba que los nombres se hayan intercambiado, es decir, que el equipo local pase a ser el equipo visitante y viceversa
     if (game.data[i].homeTeam!.name == game.data[index].homeTeam!.name &&
             game.data[i].visitorTeam!.name ==
@@ -65,24 +78,30 @@ List<int> calcularResultadoSerie(int index, Game game) {
                 game.data[index].homeTeam!.name)) {
       //Como las series de los playoffs son al mejor de 7 (el que gane 4 partidos gana la serie) se comprueba si uno de los contadores llegó a 4
       // de ser así, se sale del bucle
-      if (contadorHomeTeam == 4 ||
-          contadorVisitorTeam == 4) {
+      if (contadorHomeTeam == 4 || contadorVisitorTeam == 4) {
         break;
       }
-      //Comprobamos el resultado del partido y dentro se comprueba si los nombres se intercambiaron, es decir, si el equipo que antes era local pasó a ser visitante y viceversa
-      //Se aumenta el contador teniendo en cuenta eso
+      //Comprobamos el resultado del partido
+      //Se comprueba si el ganador fue el equipo local
       if (game.data[i].homeTeamScore > game.data[i].visitorTeamScore) {
+        //De ser así, se comprueba si los nombres se intercambiaron, es decir, si el equipo local pasó a ser visitante y viceversa.
         if (game.data[i].homeTeam!.name == game.data[index].visitorTeam!.name &&
             game.data[i].visitorTeam!.name == game.data[index].homeTeam!.name) {
+          //Si los nombres se cambiaron se aumenta el contador del equipo visitante
           contadorVisitorTeam++;
         } else {
+          //Si no se cambiaron, se aumenta el contador del equipo local
           contadorHomeTeam++;
         }
+        //Se comprueba si el ganador fue el equipo visitante
       } else if (game.data[i].visitorTeamScore > game.data[i].homeTeamScore) {
+        //Se comprueba si los nombres se intercambiaron
         if (game.data[i].homeTeam!.name == game.data[index].visitorTeam!.name &&
             game.data[i].visitorTeam!.name == game.data[index].homeTeam!.name) {
+          //Si se cambiaron se aumenta el contador del equipo local
           contadorHomeTeam++;
         } else {
+          //Si no se cambiaron se aumenta el contador del equipo visitante
           contadorVisitorTeam++;
         }
       }

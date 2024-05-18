@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'team.dart';
 
-class Data {
+class Data extends Equatable {
   int id;
   DateTime date;
   int season;
@@ -14,6 +16,7 @@ class Data {
   Team? visitorTeam;
   int? homeTeamId;
   int? visitorTeamId;
+  int vecesRepetido;
 
   Data({
     required this.id,
@@ -28,7 +31,8 @@ class Data {
     this.homeTeam,
     this.visitorTeam,
     this.homeTeamId,
-    this.visitorTeamId
+    this.visitorTeamId,
+    this.vecesRepetido = 0,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -75,4 +79,11 @@ class Data {
         "home_team_id": homeTeamId,
         "visitor_team_id": visitorTeamId,
       };
+
+  @override
+  List<Object?> get props {
+    List<String> teams = [homeTeam!.name, visitorTeam!.name];
+    teams.sort(); // Ordena los nombres alfabéticamente
+    return teams;
+  }
 }
