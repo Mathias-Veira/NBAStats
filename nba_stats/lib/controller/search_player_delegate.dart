@@ -24,10 +24,19 @@ class SearchPlayerDelegate extends SearchDelegate {
     equipos = await ApiService.getAllTeams();
   }
 
-  String getTeamByPlayerId(int teamId) {
+  String getTeamById(int teamId) {
     for (var equipo in equipos) {
       if (equipo.idEquipo == teamId) {
         return equipo.nombreEquipo;
+      }
+    }
+    return '';
+  }
+
+  String getTeamImageById(int teamId) {
+    for (var equipo in equipos) {
+      if (equipo.idEquipo == teamId) {
+        return equipo.imagenEquipo;
       }
     }
     return '';
@@ -51,11 +60,12 @@ class SearchPlayerDelegate extends SearchDelegate {
             return promedios[i].taponesPorPartido;
           default:
             return 0.0;
-         }
+        }
       }
     }
     return 0.0;
   }
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -83,8 +93,24 @@ class SearchPlayerDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              title: Text(
-                  '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador}'),
+              title: Row(
+                children: [
+                  Text(
+                    '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador}',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 20.0)),
+                  Image.asset(
+                    getTeamImageById(_filter[index].idEquipo),
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  Text(" " + getTeamById(_filter[index].idEquipo),
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                ],
+              ),
               subtitle: Text(
                   "Puntos: ${findStat(_filter[index].idJugador, "pts")}\nAsistencias: ${findStat(_filter[index].idJugador, "ast")}\nRebotes: ${findStat(_filter[index].idJugador, "reb")}\nPérdidas: ${findStat(_filter[index].idJugador, "tov")}\nRobos: ${findStat(_filter[index].idJugador, "stl")}\nTapones: ${findStat(_filter[index].idJugador, "blk")}"),
             ),
@@ -110,10 +136,23 @@ class SearchPlayerDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              title: Text(
-                '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador} ${getTeamByPlayerId(_filter[index].idEquipo)}',
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+              title: Row(
+                children: [
+                  Text(
+                    '${_filter[index].nombreJugador} ${_filter[index].apellidoJugador}',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 20.0)),
+                  Image.asset(
+                    getTeamImageById(_filter[index].idEquipo),
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  Text(" " + getTeamById(_filter[index].idEquipo),
+                      style: const TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold)),
+                ],
               ),
               subtitle: Text(
                   "Puntos: ${findStat(_filter[index].idJugador, "pts")}\nAsistencias: ${findStat(_filter[index].idJugador, "ast")}\nRebotes: ${findStat(_filter[index].idJugador, "reb")}\nPérdidas: ${findStat(_filter[index].idJugador, "tov")}\nRobos: ${findStat(_filter[index].idJugador, "stl")}\nTapones: ${findStat(_filter[index].idJugador, "blk")}"),

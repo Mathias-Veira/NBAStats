@@ -48,8 +48,33 @@ class _playoff_seriesState extends State<playoff_series> {
 
           Widget carta = Card(
             child: ListTile(
-              title: Text(
-                  "${partidos.data[index].homeTeam!.name} ${res[0]} - ${res[1]} ${partidos.data[index].visitorTeam!.name}"),
+              title: Row(
+                children: [
+                  Image.asset(
+                    'assets/img_teams/' +
+                        partidos.data[index].homeTeam!.city +
+                        ' ' +
+                        partidos.data[index].homeTeam!.name +
+                        '.png',
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 15.0)),
+                  Text("${partidos.data[index].homeTeam!.name} ${res[0]} "),
+                  const Text(' - '),
+                  Text('${res[1]} ${partidos.data[index].visitorTeam!.name}'),
+                  Padding(padding: EdgeInsets.only(left: 15.0)),
+                  Image.asset(
+                    'assets/img_teams/' +
+                        partidos.data[index].visitorTeam!.city +
+                        ' ' +
+                        partidos.data[index].visitorTeam!.name +
+                        '.png',
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                ],
+              ),
             ),
           );
           executeAfterBuild();
