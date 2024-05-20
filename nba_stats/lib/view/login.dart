@@ -3,6 +3,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nba_stats/controller/api_request.dart';
+import 'package:nba_stats/model/acceso.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/usuario.dart';
@@ -14,10 +16,20 @@ class LoginState extends StatefulWidget {
 
 class Login extends State<LoginState> {
   final keyForm = GlobalKey<FormState>();
+  final TextEditingController usernameController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     //Creamos objeto usuario con los datos pasados de la página de registro
     Usuario? usuario = ModalRoute.of(context)!.settings.arguments as Usuario?;
+    String nombreUsuario = '';
+    String passwordUsuario = '';
 
     return Scaffold(
       body: Center(
@@ -27,18 +39,25 @@ class Login extends State<LoginState> {
               key: keyForm,
               child: Column(
                 children: [
-                  SizedBox( height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Center(
-                    child: Text("NBA Stats",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),),
+                    child: Text(
+                      "NBA Stats",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                    ),
                   ),
                   SizedBox(height: 200),
                   Expanded(
                     child: TextFormField(
+                      controller: usernameController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Campo obligatorio";
                         }
-                              
+
                         if (value != usuario?.nombreUsuario) {
                           return "Nombre de Usuario incorrecto";
                         }
@@ -46,19 +65,23 @@ class Login extends State<LoginState> {
                       },
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
-                          hintText: "Ingresa tu nombre de usuario aquí",
-                          labelText: "Nombre de Usuario",
-                          labelStyle: TextStyle(color: Colors.blue[200]), ),
+                        hintText: "Ingresa tu nombre de usuario aquí",
+                        labelText: "Nombre de Usuario",
+                        labelStyle: TextStyle(color: Colors.blue[200]),
+                      ),
                     ),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Expanded(
                     child: TextFormField(
+                      controller: passwordController,
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Campo obligatorio";
                         }
-                              
+
                         if (value != usuario?.passwordUsuario) {
                           return "Contraseña incorrecta";
                         }
@@ -71,13 +94,32 @@ class Login extends State<LoginState> {
                           labelStyle: TextStyle(color: Colors.blue[200])),
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(
+                    height: 10,
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          if (usuario == null) {
+                            nombreUsuario = usernameController.text;
+                            passwordUsuario = passwordController.text;
+                            int respuesta = await ApiService.iniciarSesion(
+                                Acceso(
+                                    
+                                    nombreUsuario: nombreUsuario,
+                                    passwordUsuario: passwordUsuario));
+
+                            if (respuesta == 204) {
+                              guardarIsLogedInEnSharedPreferences(true);
+                              cambiarPaginaApp(context);
+                            } else {
+                              //mostrar alerta diciendo que la contraseña o usuario son incorrectos
+                            }
+                          }
+
                           if (keyForm.currentState!.validate()) {
                             guardarIsLogedInEnSharedPreferences(true);
                             cambiarPaginaApp(context);

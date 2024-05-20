@@ -51,9 +51,28 @@ class ApiService {
     return statusCode;
   }
 
+  static Future<Usuario> obtenerUsuario(String nombre) async {
+    String url = '$baseUrl/usuarios/$nombre';
+    int statusCode = 0;
+
+    try {
+      //Se realiza la petición post a la api
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+      );
+      return usuarioFromJson(response.body);
+    } catch (e) {
+      print('Error de conexión: $e');
+    }
+    return Usuario(usuarioId: 0, nombreUsuario: '', passwordUsuario: '');
+  }
+
   //Este método permite verificar si los datos de inicio de sesión son correctos
   static Future<int> iniciarSesion(Acceso acceso) async {
-    String url = '$baseUrl/iniciar-sesion';
+    String url = '$baseUrl/login';
     int statusCode = 0;
     //En esta variable se almacena el usuario que se pasa por parámetro convertido en json
     String jsonBody = json.encode(acceso.toJson());
@@ -269,7 +288,8 @@ class ApiService {
   }
 
   static Future<Game> getPlayOffGames() async {
-    String url = 'https://api.balldontlie.io/v1/games?postseason=true&seasons[]=2023&per_page=100';
+    String url =
+        'https://api.balldontlie.io/v1/games?postseason=true&seasons[]=2023&per_page=100';
     try {
       //Se realiza la petición get al endpoint
       http.Response response = await http.get(

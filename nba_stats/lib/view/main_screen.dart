@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:nba_stats/controller/api_request.dart';
+import 'package:nba_stats/model/usuario.dart';
 import 'package:nba_stats/view/standings.dart';
 
 import 'games.dart';
@@ -13,7 +15,27 @@ class MainScreen extends StatefulWidget {
 }
 
 class _HomeState extends State<MainScreen> {
-  int selectedIndex = 0;
+    int selectedIndex = 0;
+  Usuario? usuario;
+  Future<Usuario>? user;
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerUsuario();
+  }
+
+  Future<void> obtenerUsuario() async {
+    try {
+      Usuario usuarioObtenido = await ApiService.obtenerUsuario(usuario?.nombreUsuario ?? '');
+
+      setState(() {
+        usuario = usuarioObtenido;
+      });
+    } catch (error) {
+      print('Error al obtener el usuario: $error');
+    }
+  }
 
   cambiarPagina(BuildContext context, String route) {
     Navigator.of(context).pushNamed(route);
@@ -52,10 +74,10 @@ class _HomeState extends State<MainScreen> {
           children: [
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.teal[100]),
-              accountName: const Text(
-                'Mathias',
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              accountName: Text(
+                usuario?.nombreUsuario?? '',
+                style: const TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold),
               ),
               accountEmail: const Text(''),
               currentAccountPictureSize: const Size(55, 55),
@@ -82,7 +104,7 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap:() => cambiarPagina(context,'/statsLeaders'),
+              onTap: () => cambiarPagina(context, '/statsLeaders'),
             ),
             ListTile(
               title: const Text(
@@ -94,7 +116,7 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap:() => cambiarPagina(context,'/playoffsSeries'),
+              onTap: () => cambiarPagina(context, '/playoffsSeries'),
             )
           ],
         ),
