@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:nba_stats/controller/api_request.dart';
 import 'package:nba_stats/model/usuario.dart';
 import 'package:nba_stats/view/standings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'games.dart';
 import 'home.dart';
 import 'players.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final String nombreUsuario;
+  const MainScreen({super.key, required this.nombreUsuario});
   @override
-  State<MainScreen> createState() => _HomeState();
+  State<MainScreen> createState() => _HomeState(nombreUsuario: nombreUsuario);
 }
 
 class _HomeState extends State<MainScreen> {
-    int selectedIndex = 0;
+  final String nombreUsuario;
+  int selectedIndex = 0;
   Usuario? usuario;
   Future<Usuario>? user;
+  final PageController _pageController = PageController();
+
+  _HomeState({required this.nombreUsuario});
 
   @override
   void initState() {
@@ -27,7 +32,7 @@ class _HomeState extends State<MainScreen> {
 
   Future<void> obtenerUsuario() async {
     try {
-      Usuario usuarioObtenido = await ApiService.obtenerUsuario(usuario?.nombreUsuario ?? '');
+      Usuario usuarioObtenido = await ApiService.obtenerUsuario(nombreUsuario);
 
       setState(() {
         usuario = usuarioObtenido;
@@ -41,13 +46,23 @@ class _HomeState extends State<MainScreen> {
     Navigator.of(context).pushNamed(route);
   }
 
+  logOut(BuildContext context, String route) {
+    userLogOut();
+    Navigator.of(context).pushNamed(route);
+  }
+
+  Future<void> userLogOut() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     final screens = [
       const Home(),
       const Games(),
-      const standings(),
       const Players(),
+      const standings(),
     ];
     return Scaffold(
       appBar: AppBar(
@@ -63,8 +78,13 @@ class _HomeState extends State<MainScreen> {
           );
         }),
       ),
-      body: IndexedStack(
-        index: selectedIndex,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (index) {
+          setState(() {
+            selectedIndex = index;
+          });
+        },
         children: screens,
       ),
       drawer: Drawer(
@@ -75,7 +95,7 @@ class _HomeState extends State<MainScreen> {
             UserAccountsDrawerHeader(
               decoration: BoxDecoration(color: Colors.teal[100]),
               accountName: Text(
-                usuario?.nombreUsuario?? '',
+                usuario?.nombreUsuario ?? '',
                 style: const TextStyle(
                     color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -97,8 +117,11 @@ class _HomeState extends State<MainScreen> {
             ListTile(
               title: const Text(
                 "Stats Leaders",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(
+                Icons.bar_chart,
+                color: Colors.white,
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
@@ -109,14 +132,32 @@ class _HomeState extends State<MainScreen> {
             ListTile(
               title: const Text(
                 "PlayOffs Series",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(
+                Icons.emoji_events,
+                color: Colors.white,
               ),
               trailing: const Icon(
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
               onTap: () => cambiarPagina(context, '/playoffsSeries'),
+            ),
+            ListTile(
+              title: const Text(
+                "Log Out",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(
+                Icons.output_rounded,
+                color: Colors.white,
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+              onTap: () => logOut(context, '/login'),
             )
           ],
         ),
@@ -127,6 +168,7 @@ class _HomeState extends State<MainScreen> {
         onTap: (value) {
           setState(() {
             selectedIndex = value;
+            _pageController.jumpToPage(value);
           });
         },
         elevation: 0,
@@ -157,18 +199,6 @@ class _HomeState extends State<MainScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.star_border,
-              color: Colors.white,
-            ),
-            activeIcon: Icon(
-              Icons.star,
-              color: Colors.white,
-            ),
-            label: 'Standings',
-            backgroundColor: Colors.grey[850],
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
               Icons.group_outlined,
               color: Colors.white,
             ),
@@ -177,6 +207,18 @@ class _HomeState extends State<MainScreen> {
               color: Colors.white,
             ),
             label: 'Players',
+            backgroundColor: Colors.grey[850],
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.star_border,
+              color: Colors.white,
+            ),
+            activeIcon: Icon(
+              Icons.star,
+              color: Colors.white,
+            ),
+            label: 'Standings',
             backgroundColor: Colors.grey[850],
           ),
         ],

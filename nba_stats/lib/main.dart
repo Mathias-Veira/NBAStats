@@ -12,7 +12,8 @@ import 'view/stats_leaders.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final isLogedIn = await obtenerIsLogedIn();
-  runApp(NbaStats(isLogedIn: isLogedIn));
+  final userName = await obtenerUserName();
+  runApp(NbaStats(isLogedIn: isLogedIn, userName: userName,));
   // Se establece la pantalla del sistema de forma inmersiva
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setSystemUIOverlayStyle(
@@ -24,11 +25,17 @@ Future<bool> obtenerIsLogedIn() async {
   return prefs.getBool('isLogedIn') ?? false;
 }
 
+Future<String> obtenerUserName() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('userName') ?? '';
+}
+
 //Clase Principal
 
 class NbaStats extends StatelessWidget {
   final bool isLogedIn;
-  const NbaStats({super.key, required this.isLogedIn});
+  final String userName;
+  const NbaStats({super.key, required this.isLogedIn,required this.userName});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -38,9 +45,10 @@ class NbaStats extends StatelessWidget {
       title: 'NBA Stats',
       debugShowCheckedModeBanner: false,
       //establecemos la ruta principal
-      initialRoute: isLogedIn ? '/home': '/login',
+      initialRoute: isLogedIn ? '/home' : '/login',
       routes: {
-        '/home': (BuildContext context) => const MainScreen(),
+        '/home': (BuildContext context) =>
+             MainScreen(nombreUsuario: userName),
         '/game_detail': (BuildContext context) => const game_detail(
               idPartido: 0,
             ),

@@ -21,9 +21,9 @@ class Usuario {
   });
   //Este método permite construir un objeto de la clase Usuario haciendo uso del json
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-        usuarioId: json["idUsuario"],
-        nombreUsuario: json["nombreUsuario"],
-        passwordUsuario: json["passwordUsuario"],
+        usuarioId: json["idUsuario"]?? 0,
+        nombreUsuario: json["nombreUsuario"]??'',
+        passwordUsuario: json["passwordUsuario"]?? '',
       );
   //Este método convierte un objeto de la clase Usuario a un mapa el cuál se convertirá en un json
   Map<String, dynamic> toJson() => {

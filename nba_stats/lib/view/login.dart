@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nba_stats/controller/api_request.dart';
 import 'package:nba_stats/model/acceso.dart';
+import 'package:nba_stats/view/main_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/usuario.dart';
@@ -106,23 +107,29 @@ class Login extends State<LoginState> {
                           if (usuario == null) {
                             nombreUsuario = usernameController.text;
                             passwordUsuario = passwordController.text;
-                            int respuesta = await ApiService.iniciarSesion(
-                                Acceso(
-                                    
-                                    nombreUsuario: nombreUsuario,
-                                    passwordUsuario: passwordUsuario));
+                            Acceso user = Acceso(
+                                nombreUsuario: nombreUsuario,
+                                passwordUsuario: passwordUsuario);
+                            int respuesta =
+                                await ApiService.iniciarSesion(user);
 
                             if (respuesta == 204) {
-                              guardarIsLogedInEnSharedPreferences(true);
-                              cambiarPaginaApp(context);
+                              Acceso user = Acceso(
+                                  nombreUsuario: nombreUsuario,
+                                  passwordUsuario: passwordUsuario);
+                              guardarIsLogedInEnSharedPreferences(true, user);
+                              cambiarPaginaApp(context, nombreUsuario);
                             } else {
                               //mostrar alerta diciendo que la contraseña o usuario son incorrectos
                             }
                           }
 
                           if (keyForm.currentState!.validate()) {
-                            guardarIsLogedInEnSharedPreferences(true);
-                            cambiarPaginaApp(context);
+                            Acceso user = Acceso(
+                                nombreUsuario: nombreUsuario,
+                                passwordUsuario: passwordUsuario);
+                            guardarIsLogedInEnSharedPreferences(true, user);
+                            cambiarPaginaApp(context, nombreUsuario);
                           } else {
                             print("Validación incorrecta");
                           }
@@ -158,12 +165,17 @@ class Login extends State<LoginState> {
     Navigator.of(context).pushNamed('/registro');
   }
 
-  cambiarPaginaApp(BuildContext context) {
-    Navigator.of(context).pushNamed('/home');
+  cambiarPaginaApp(BuildContext context, String nombreUsuario) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MainScreen(nombreUsuario: nombreUsuario),
+      ),
+    );
   }
 
-  void guardarIsLogedInEnSharedPreferences(bool value) async {
+  void guardarIsLogedInEnSharedPreferences(bool value, Acceso user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool('isLogedIn', value);
+    prefs.setString('userName', user.nombreUsuario);
   }
 }
