@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nba_stats/view/games_detail.dart';
+import 'package:nba_stats/view/mvp.dart';
+import 'package:nba_stats/view/nba_champion.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'view/login.dart';
@@ -56,6 +58,8 @@ class NbaStats extends StatelessWidget {
         '/playoffsSeries': (BuildContext context) => const playoff_series(),
         '/login': (BuildContext context) => LoginState(),
         '/registro': (BuildContext context) => RegistroState(),
+        '/mvp':(BuildContext context) => const MVP(),
+        '/champion':(BuildContext context) => const NBAChampion(),
       },
     );
   }

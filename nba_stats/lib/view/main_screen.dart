@@ -144,6 +144,38 @@ class _HomeState extends State<MainScreen> {
               ),
               onTap: () => cambiarPagina(context, '/playoffsSeries'),
             ),
+
+            ListTile(
+              title: const Text(
+                "Your MVP",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(
+                Icons.star,
+                color: Colors.white,
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+              onTap: () => cambiarPagina(context, '/mvp'),
+            ),
+
+            ListTile(
+              title: const Text(
+                "Your NBA Champion",
+                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+              leading: const Icon(
+                Icons.emoji_events,
+                color: Colors.white,
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                color: Colors.white,
+              ),
+              onTap: () => cambiarPagina(context, '/champion'),
+            ),
             ListTile(
               title: const Text(
                 "Log Out",
