@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:nba_stats/controller/api_request.dart';
 import 'package:nba_stats/model/equipo.dart';
 import 'package:nba_stats/model/promedio_jugadores.dart';
+import 'package:nba_stats/model/seguir.dart';
+import 'package:nba_stats/model/usuario.dart';
 
 import '../model/player.dart';
 
 class SearchMVPDelegate extends SearchDelegate {
+  final Usuario? usuario;
+  SearchMVPDelegate({required this.players, required this.usuario});
   List<Jugador> players;
   List<Jugador> _filter = [];
-  SearchMVPDelegate(this.players);
   List<PromedioJugadores> promedios = [];
   List<Equipo> equipos = [];
 
@@ -64,6 +67,11 @@ class SearchMVPDelegate extends SearchDelegate {
       }
     }
     return 0.0;
+  }
+
+  seguirJugador(int idUsuario, int idJugador) {
+    ApiService.seguirJugador(
+        Seguir(idUsuario: idUsuario, idJugador: idJugador));
   }
 
   @override
@@ -136,6 +144,8 @@ class SearchMVPDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
+              onTap: () =>
+                  seguirJugador(usuario!.usuarioId, _filter[index].idJugador),
               title: Row(
                 children: [
                   Text(

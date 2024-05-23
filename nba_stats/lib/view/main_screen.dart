@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:nba_stats/controller/api_request.dart';
 import 'package:nba_stats/model/usuario.dart';
+import 'package:nba_stats/view/mvp.dart';
 import 'package:nba_stats/view/standings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../controller/search_mvp_delegate.dart';
 import 'games.dart';
 import 'home.dart';
 import 'players.dart';
@@ -44,6 +46,15 @@ class _HomeState extends State<MainScreen> {
 
   cambiarPagina(BuildContext context, String route) {
     Navigator.of(context).pushNamed(route);
+  }
+
+  cambiarAElegirMVP(BuildContext context, int idUsuario){
+    Navigator.of(context).push(MaterialPageRoute(
+    builder: (context) => MVP(user: usuario,),
+    settings: RouteSettings(
+      arguments: usuario
+    ),
+  ),);
   }
 
   logOut(BuildContext context, String route) {
@@ -158,7 +169,7 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap: () => cambiarPagina(context, '/mvp'),
+              onTap: () => cambiarAElegirMVP(context, usuario!.usuarioId),
             ),
 
             ListTile(

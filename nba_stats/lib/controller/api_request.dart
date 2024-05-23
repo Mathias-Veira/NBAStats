@@ -13,6 +13,7 @@ import '../model/acceso.dart';
 import '../model/data.dart';
 import '../model/player.dart';
 import '../model/estadistica.dart';
+import '../model/seguir.dart';
 import '../model/usuario.dart';
 
 //Clase que contiene los métodos necesarios para conectarse a la API
@@ -326,5 +327,37 @@ class ApiService {
     }
     //Se devuelve la lista de partidos
     return equipos;
+  }
+
+
+  //Este método permite verificar si los datos de inicio de sesión son correctos
+  static Future<int> seguirJugador(Seguir seguir) async {
+    String url = '$baseUrl/seguir';
+    int statusCode = 0;
+    //En esta variable se almacena el usuario que se pasa por parámetro convertido en json
+    String jsonBody = json.encode(seguir.toJson());
+
+    try {
+      //Se realiza la petición post al endpoint
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonBody,
+      );
+      //Se almacena el código de respuesta
+      statusCode = response.statusCode;
+      //Se verifica que el código de respuesta sea 200 (Ok)
+      if (statusCode == 200) {
+        print('Seguir a jugador exitoso.');
+      } else {
+        print('Error al seguir Jugador: $statusCode $jsonBody');
+      }
+    } catch (e) {
+      print('Error de conexión: $e');
+    }
+    //Se devuelve código de respuesta
+    return statusCode;
   }
 }
