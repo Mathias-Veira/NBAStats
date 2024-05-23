@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:nba_stats/model/apoyar.dart';
 import 'package:nba_stats/model/equipo.dart';
 import 'package:nba_stats/model/game.dart';
 import 'package:nba_stats/model/promedio_jugadores.dart';
@@ -353,6 +354,37 @@ class ApiService {
         print('Seguir a jugador exitoso.');
       } else {
         print('Error al seguir Jugador: $statusCode $jsonBody');
+      }
+    } catch (e) {
+      print('Error de conexión: $e');
+    }
+    //Se devuelve código de respuesta
+    return statusCode;
+  }
+
+  //Este método permite verificar si los datos de inicio de sesión son correctos
+  static Future<int> apoyarEquipo (Apoyar apoyar) async {
+    String url = '$baseUrl/apoyar';
+    int statusCode = 0;
+    //En esta variable se almacena el usuario que se pasa por parámetro convertido en json
+    String jsonBody = json.encode(apoyar.toJson());
+
+    try {
+      //Se realiza la petición post al endpoint
+      http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonBody,
+      );
+      //Se almacena el código de respuesta
+      statusCode = response.statusCode;
+      //Se verifica que el código de respuesta sea 200 (Ok)
+      if (statusCode == 200) {
+        print('Apoyar Equipo exitoso.');
+      } else {
+        print('Error al Apoyar Equipo : $statusCode $jsonBody');
       }
     } catch (e) {
       print('Error de conexión: $e');
