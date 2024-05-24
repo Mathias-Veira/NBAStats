@@ -49,22 +49,26 @@ class _HomeState extends State<MainScreen> {
     Navigator.of(context).pushNamed(route);
   }
 
-  cambiarAElegirMVP(BuildContext context, int idUsuario){
-    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => MVP(user: usuario,),
-    settings: RouteSettings(
-      arguments: usuario
-    ),
-  ),);
+  cambiarAElegirMVP(BuildContext context, Usuario user) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MVP(
+          user: user,
+        ),
+        settings: RouteSettings(arguments: user),
+      ),
+    );
   }
 
-  cambiarAElegirCampeon(BuildContext context, int idUsuario){
-    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => NBAChampion(user: usuario,),
-    settings: RouteSettings(
-      arguments: usuario
-    ),
-  ),);
+  cambiarAElegirCampeon(BuildContext context, Usuario user) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => NBAChampion(
+          user: user,
+        ),
+        settings: RouteSettings(arguments: user),
+      ),
+    );
   }
 
   logOut(BuildContext context, String route) {
@@ -80,7 +84,7 @@ class _HomeState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final screens = [
-      const Home(),
+      Home(user: usuario,),
       const Games(),
       const Players(),
       const standings(),
@@ -138,7 +142,8 @@ class _HomeState extends State<MainScreen> {
             ListTile(
               title: const Text(
                 "Stats Leaders",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
                 Icons.bar_chart,
@@ -153,7 +158,8 @@ class _HomeState extends State<MainScreen> {
             ListTile(
               title: const Text(
                 "PlayOffs Series",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
                 Icons.emoji_events,
@@ -165,11 +171,11 @@ class _HomeState extends State<MainScreen> {
               ),
               onTap: () => cambiarPagina(context, '/playoffsSeries'),
             ),
-
             ListTile(
               title: const Text(
                 "Your MVP",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
                 Icons.star,
@@ -179,13 +185,13 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap: () => cambiarAElegirMVP(context, usuario!.usuarioId),
+              onTap: () => cambiarAElegirMVP(context, usuario!),
             ),
-
             ListTile(
               title: const Text(
                 "Your NBA Champion",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
                 Icons.emoji_events,
@@ -195,12 +201,13 @@ class _HomeState extends State<MainScreen> {
                 Icons.arrow_forward_ios,
                 color: Colors.white,
               ),
-              onTap: () => cambiarAElegirCampeon(context, usuario!.usuarioId),
+              onTap: () => cambiarAElegirCampeon(context, usuario!),
             ),
             ListTile(
               title: const Text(
                 "Log Out",
-                style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
                 Icons.output_rounded,

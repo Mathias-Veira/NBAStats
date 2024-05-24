@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
+
 List<Equipo> equipoFromJson(String str) =>
     List<Equipo>.from(json.decode(str).map((x) => Equipo.fromJson(x)));
 
+Equipo unEquipoFromJson(String str) => Equipo.fromJson(json.decode(str));
 String equipoToJson(List<Equipo> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -50,7 +53,7 @@ class Equipo {
         porcentajeVictorias: json["porcentajeVictorias"]?.toDouble() ?? 0.0,
       );
 
-      static String _getDefaultImageUrl(Map<String, dynamic> json) {
+  static String _getDefaultImageUrl(Map<String, dynamic> json) {
     String ciudadEquipo = json["ciudadEquipo"];
     String nombreEquipo = json["nombreEquipo"];
     return "assets/img_teams/$ciudadEquipo $nombreEquipo.png";

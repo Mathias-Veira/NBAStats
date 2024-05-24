@@ -392,4 +392,46 @@ class ApiService {
     //Se devuelve código de respuesta
     return statusCode;
   }
+
+   //Este método permite listar todos los mazos de un usuario en concreto
+  static Future<List<PromedioJugadores>> getAllFollowedPlayersStats(int idUsuario) async {
+    String url = '$baseUrl/promedios/jugadores/seguidos/$idUsuario';
+    List<PromedioJugadores> promedios = [];
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      return promedioJugadoresFromJsonStats(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de jugadores
+    return promedios;
+  }
+
+   //Este método permite listar todos los mazos de un usuario en concreto
+  static Future<Equipo> getTeamById(int idJugador) async {
+    String url = '$baseUrl/team/$idJugador';
+    Equipo equipo = Equipo(idEquipo: 0, nombreEquipo: "", ciudadEquipo: "", abreviacionEquipo: "", imagenEquipo: "", conferenciaEquipo: "", divisionEquipo: "", puestoConferencia: 0, puestoDivision: 0, nVictorias: 0, nDerrotas: 0, porcentajeVictorias: 0);
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      return unEquipoFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de jugadores
+    return equipo ;
+  }
 }
