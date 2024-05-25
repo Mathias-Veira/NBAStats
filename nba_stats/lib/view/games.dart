@@ -121,7 +121,7 @@ class _ListaPartidos extends StatelessWidget {
                             partidos[i].homeTeamScore.toString() +
                             ' ' +
                             partidos[i].homeTeam!.name +
-                            ' ')),
+                            ' ', style: TextStyle(fontSize: 15),)),
                   ),
                   
                   Container(
