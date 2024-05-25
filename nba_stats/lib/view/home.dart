@@ -23,28 +23,10 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    if (user != null) {
-      getAllFollowedPlayersStats(user!.usuarioId);
-      
-    }
-  }
-
-  void getAllFollowedPlayersStats(int idUsuario) async {
-    List<PromedioJugadores> promediosTemporales = [];
-    promediosTemporales =
-        await ApiService.getAllFollowedPlayersStats(idUsuario);
-    setState(() {
-      promedios = promediosTemporales;
-    });
-  }
-
-  void getTeamById(int idJugador) async {
-    equipos.add(await ApiService.getTeamById(idJugador));
   }
 
   @override
   Widget build(BuildContext context) {
-    
     return Column(
       children: [
         const Text(
@@ -53,30 +35,20 @@ class _HomeState extends State<Home> {
         ),
         SizedBox(
           height: 200,
-          child: ListView.builder(
-              itemCount: promedios.length,
-              itemBuilder: (_, index) {
-                getTeamById(promedios[index].idJugador);
-                return Card(
-                  child: ListTile(
-                    title: Row(
-                      children: [
-                        Image.asset(
-                          equipos[index].imagenEquipo,
-                          width: 30.0,
-                          height: 30.0,
-                        ),
-                        Text(
-                          '${promedios[index].nombreJugador} ${promedios[index].apellidoJugador}',
-                          style: const TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                    subtitle: Text(
-                        "Puntos: ${promedios[index].puntosPorPartido}\nAsistencias: ${promedios[index].asistenciasPorPartido}\nRebotes: ${promedios[index].rebotesPorPartido}\nPérdidas: ${promedios[index].perdidasPorPartido}\nRobos: ${promedios[index].puntosPorPartido}\nTapones: ${promedios[index].taponesPorPartido}"),
-                  ),
-                );
+          child: FutureBuilder(
+              future:
+                  ApiService.getAllFollowedPlayersStats(user?.usuarioId ?? 0),
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                } else {
+                  return _ListarJugadoresFavoritos(
+                      snapshot.data != null ? snapshot.data : [], equipos);
+                }
               }),
         ),
         const Text(
@@ -85,5 +57,61 @@ class _HomeState extends State<Home> {
         ),
       ],
     );
+  }
+}
+
+class _ListarJugadoresFavoritos extends StatelessWidget {
+  List<PromedioJugadores> promedios;
+  List<Equipo> equipos;
+  _ListarJugadoresFavoritos(this.promedios, this.equipos);
+
+  Future<List<Equipo>> fetchTeams() async {
+    List<Equipo> equipos = [];
+    for (var promedio in promedios) {
+      equipos.add(await ApiService.getTeamById(promedio.idJugador));
+    }
+    return equipos;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: fetchTeams(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          } else {
+            equipos = snapshot.data;
+            return ListView.builder(
+                itemCount: promedios.length,
+                itemBuilder: (_, index) {
+                  return Card(
+                    child: ListTile(
+                      title: Row(
+                        children: [
+                          Image.asset(
+                            equipos[index].imagenEquipo,
+                            width: 30.0,
+                            height: 30.0,
+                          ),
+                          Text(
+                            '${promedios[index].nombreJugador} ${promedios[index].apellidoJugador}',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                      subtitle: Text(
+                          "Puntos: ${promedios[index].puntosPorPartido}\nAsistencias: ${promedios[index].asistenciasPorPartido}\nRebotes: ${promedios[index].rebotesPorPartido}\nPérdidas: ${promedios[index].perdidasPorPartido}\nRobos: ${promedios[index].puntosPorPartido}\nTapones: ${promedios[index].taponesPorPartido}"),
+                    ),
+                  );
+                });
+          }
+        });
   }
 }

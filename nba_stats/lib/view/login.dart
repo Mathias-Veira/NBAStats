@@ -130,8 +130,6 @@ class Login extends State<LoginState> {
                                 passwordUsuario: passwordUsuario);
                             guardarIsLogedInEnSharedPreferences(true, user);
                             cambiarPaginaApp(context, nombreUsuario);
-                          } else {
-                            print("Validación incorrecta");
                           }
                         },
                         style: ElevatedButton.styleFrom(
