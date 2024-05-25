@@ -10,13 +10,13 @@ class NBAChampion extends StatefulWidget {
   const NBAChampion({super.key, required this.user});
 
   @override
-  State<NBAChampion> createState() => _NBAChampionState(user: user);
+  State<NBAChampion> createState() => _NBAChampionState();
 }
 
 class _NBAChampionState extends State<NBAChampion> {
-  final Usuario? user;
+
   List<Equipo> equipos = [];
-  _NBAChampionState({required this.user});
+  
   @override
   void initState() {
     super.initState();
@@ -44,7 +44,7 @@ class _NBAChampionState extends State<NBAChampion> {
           return Card(
             child: ListTile(
               onTap: () =>
-                  apoyarEquipo(user!.usuarioId, equipos[index].idEquipo),
+                  apoyarEquipo(widget.user!.usuarioId, equipos[index].idEquipo),
               title: Row(
                 children: [
                   Image.asset(

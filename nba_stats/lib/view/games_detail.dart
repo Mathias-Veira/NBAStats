@@ -10,13 +10,12 @@ class game_detail extends StatefulWidget {
   const game_detail({super.key, required this.idPartido});
 
   @override
-  State<game_detail> createState() => _game_detailState(idPartido: idPartido);
+  State<game_detail> createState() => _game_detailState();
 }
 
 class _game_detailState extends State<game_detail> {
   Estadistica promedios = Estadistica(data: []);
-  final int idPartido;
-  _game_detailState({required this.idPartido});
+ 
   @override
   void initState() {
     super.initState();
@@ -26,7 +25,7 @@ class _game_detailState extends State<game_detail> {
   // Función para cargar las estadisticas de los jugadores
   void _loadGameDetails() async {
     Estadistica promedioTemporal = Estadistica(data: []);
-    promedioTemporal = await ApiService.getStatsByGame(idPartido);
+    promedioTemporal = await ApiService.getStatsByGame(widget.idPartido);
     promedioTemporal = ordenarPromedios(promedioTemporal);
     setState(() {
       promedios = promedioTemporal;

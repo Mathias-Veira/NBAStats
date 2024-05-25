@@ -13,18 +13,12 @@ class Home extends StatefulWidget {
   const Home({super.key, required this.user});
 
   @override
-  State<Home> createState() => _HomeState(user: user);
+  State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
   List<Equipo> equipos = [];
   List<PromedioJugadores> promedios = [];
-  final Usuario? user;
-  _HomeState({required this.user});
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +29,11 @@ class _HomeState extends State<Home> {
             'Jugadores Favoritos',
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
-          Container(
-            height: 400,
+          SizedBox(
+            height: 300,
             child: FutureBuilder(
                 future:
-                    ApiService.getAllFollowedPlayersStats(user?.usuarioId ?? 0),
+                    ApiService.getAllFollowedPlayersStats(widget.user?.usuarioId ?? 0),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -56,6 +50,23 @@ class _HomeState extends State<Home> {
           const Text(
             'Equipos Favoritos',
             style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          Container(
+            height: 400,
+            child: FutureBuilder(
+                future: ApiService.getAllFollowedTeams(widget.user?.usuarioId ?? 0),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return _ListarEquiposFavoritos(
+                        snapshot.data != null ? snapshot.data : []);
+                  }
+                }),
           ),
         ],
       ),
@@ -90,7 +101,7 @@ class _ListarJugadoresFavoritos extends StatelessWidget {
           } else {
             equipos = snapshot.data;
             return ListView.builder(
-                itemCount: promedios.length,
+                itemCount: equipos.length,
                 itemBuilder: (_, index) {
                   return Card(
                     child: ListTile(
@@ -115,6 +126,37 @@ class _ListarJugadoresFavoritos extends StatelessWidget {
                   );
                 });
           }
+        });
+  }
+}
+
+class _ListarEquiposFavoritos extends StatelessWidget {
+  List<Equipo> equipos;
+  _ListarEquiposFavoritos(this.equipos);
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: equipos.length,
+        itemBuilder: (_, index) {
+          return Card(
+            child: ListTile(
+              title: Row(
+                children: [
+                  Image.asset(
+                    equipos[index].imagenEquipo,
+                    width: 30.0,
+                    height: 30.0,
+                  ),
+                  Padding(padding: EdgeInsets.only(left: 20)),
+                  Text(
+                    '${equipos[index].ciudadEquipo} ${equipos[index].nombreEquipo}',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+          );
         });
   }
 }

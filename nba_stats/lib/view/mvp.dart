@@ -9,13 +9,11 @@ class MVP extends StatefulWidget {
   const MVP({super.key, required this.user});
 
   @override
-  State<MVP> createState() => _MVPState(user: user);
+  State<MVP> createState() => _MVPState();
 }
 
 class _MVPState extends State<MVP> {
   List<Jugador> players = [];
-  final Usuario? user;
-  _MVPState({required this.user});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +26,7 @@ class _MVPState extends State<MVP> {
                 context: context,
                 delegate: SearchMVPDelegate(
                     players: [],
-                    usuario: user));
+                    usuario: widget.user));
           },
           title: const Text(
             'Search Your MVP',

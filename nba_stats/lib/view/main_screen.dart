@@ -15,17 +15,15 @@ class MainScreen extends StatefulWidget {
   final String nombreUsuario;
   const MainScreen({super.key, required this.nombreUsuario});
   @override
-  State<MainScreen> createState() => _HomeState(nombreUsuario: nombreUsuario);
+  State<MainScreen> createState() => _HomeState();
 }
 
 class _HomeState extends State<MainScreen> {
-  final String nombreUsuario;
   int selectedIndex = 0;
   Usuario? usuario;
   Future<Usuario>? user;
   final PageController _pageController = PageController();
 
-  _HomeState({required this.nombreUsuario});
 
   @override
   void initState() {
@@ -35,7 +33,7 @@ class _HomeState extends State<MainScreen> {
 
   Future<void> obtenerUsuario() async {
     try {
-      Usuario usuarioObtenido = await ApiService.obtenerUsuario(nombreUsuario);
+      Usuario usuarioObtenido = await ApiService.obtenerUsuario(widget.nombreUsuario);
 
       setState(() {
         usuario = usuarioObtenido;

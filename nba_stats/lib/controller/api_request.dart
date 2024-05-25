@@ -434,4 +434,24 @@ class ApiService {
     //Se devuelve la lista de jugadores
     return equipo ;
   }
+
+   static Future<List<Equipo>> getAllFollowedTeams(int idUsuario) async {
+    String url = '$baseUrl/equipos/apoyados/$idUsuario';
+    List<Equipo> equipos = [];
+    try {
+      //Se realiza la petición get al endpoint
+      http.Response response = await http.get(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      );
+      return equipoFromJson(response.body);
+    } catch (e) {
+      print('Error conexión: $e');
+    }
+    //Se devuelve la lista de jugadores
+    return equipos;
+  }
 }
