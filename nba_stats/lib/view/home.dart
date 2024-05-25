@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nba_stats/model/equipo.dart';
@@ -27,35 +28,37 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const Text(
-          'Jugadores Favoritos',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-        SizedBox(
-          height: 200,
-          child: FutureBuilder(
-              future:
-                  ApiService.getAllFollowedPlayersStats(user?.usuarioId ?? 0),
-              builder: (BuildContext context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                } else {
-                  return _ListarJugadoresFavoritos(
-                      snapshot.data != null ? snapshot.data : [], equipos);
-                }
-              }),
-        ),
-        const Text(
-          'Equipos Favoritos',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const Text(
+            'Jugadores Favoritos',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          Container(
+            height: 400,
+            child: FutureBuilder(
+                future:
+                    ApiService.getAllFollowedPlayersStats(user?.usuarioId ?? 0),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text(snapshot.error.toString());
+                  } else {
+                    return _ListarJugadoresFavoritos(
+                        snapshot.data != null ? snapshot.data : [], equipos);
+                  }
+                }),
+          ),
+          const Text(
+            'Equipos Favoritos',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -101,6 +101,8 @@ class SearchMVPDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
+              onTap: () =>
+                  seguirJugador(usuario!.usuarioId, _filter[index].idJugador),
               title: Row(
                 children: [
                   Text(
