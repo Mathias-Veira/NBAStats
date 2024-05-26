@@ -52,7 +52,7 @@ class _standingsState extends State<standings> {
             Row(
               children: [
                 Padding(padding: EdgeInsets.only(left: 25.0)),
-                Text("Filter by Conference: "),
+                Text("Filtrar Por Conferencia: "),
                 DropdownButton<String>(
                   value: selectedConference,
                   onChanged: (value) {
@@ -70,7 +70,7 @@ class _standingsState extends State<standings> {
                   }).toList(),
                 ),
                 Padding(padding: EdgeInsets.only(left: 25.0)),
-                Text("Filter by Division: "),
+                Text("Filtrar Por División: "),
                 DropdownButton<String>(
                   value: selectedDivision,
                   onChanged: (value) {
@@ -101,12 +101,12 @@ class _standingsState extends State<standings> {
                 columns: [
                   DataColumn(label: Text("Ranking")),
                   DataColumn(label: Text("")),
-                  DataColumn(label: Text("Name")),
-                  DataColumn(label: Text("W")),
-                  DataColumn(label: Text("L")),
-                  DataColumn(label: Text("PCT")),
-                  DataColumn(label: Text("Conference")),
-                  DataColumn(label: Text("Division")),
+                  DataColumn(label: Text("Nombre")),
+                  DataColumn(label: Text("Victorias")),
+                  DataColumn(label: Text("Derrotas")),
+                  DataColumn(label: Text("Porcentaje Victorias")),
+                  DataColumn(label: Text("Conferencia")),
+                  DataColumn(label: Text("División")),
                 ],
                 rows: equipos
                     .map((equipo) => DataRow(cells: [

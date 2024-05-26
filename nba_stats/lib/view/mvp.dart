@@ -29,7 +29,7 @@ class _MVPState extends State<MVP> {
                     usuario: widget.user));
           },
           title: const Text(
-            'Search Your MVP',
+            'Busca Tu MVP',
           ),
         ),
       ),

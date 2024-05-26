@@ -148,12 +148,12 @@ class _HomeState extends State<MainScreen> {
             ),
             ListTile(
               title: const Text(
-                "PlayOffs Series",
+                "Series PlayOffs",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
-                Icons.emoji_events,
+                Icons.sports_score_outlined,
                 color: Colors.white,
               ),
               trailing: const Icon(
@@ -164,12 +164,12 @@ class _HomeState extends State<MainScreen> {
             ),
             ListTile(
               title: const Text(
-                "Your MVP",
+                "Tu MVP",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               leading: const Icon(
-                Icons.star,
+                Icons.accessibility_new,
                 color: Colors.white,
               ),
               trailing: const Icon(
@@ -180,7 +180,7 @@ class _HomeState extends State<MainScreen> {
             ),
             ListTile(
               title: const Text(
-                "Your NBA Champion",
+                "Tu Equipo Favorito",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -196,7 +196,7 @@ class _HomeState extends State<MainScreen> {
             ),
             ListTile(
               title: const Text(
-                "Log Out",
+                "Cerrar Sesión",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
@@ -233,7 +233,7 @@ class _HomeState extends State<MainScreen> {
               Icons.home_filled,
               color: Colors.white,
             ),
-            label: 'Home',
+            label: 'Inicio',
             backgroundColor: Colors.grey[850],
           ),
           BottomNavigationBarItem(
@@ -245,7 +245,7 @@ class _HomeState extends State<MainScreen> {
               Icons.sports_basketball_outlined,
               color: Colors.white,
             ),
-            label: 'Games',
+            label: 'Partidos',
             backgroundColor: Colors.grey[850],
           ),
           BottomNavigationBarItem(
@@ -257,7 +257,7 @@ class _HomeState extends State<MainScreen> {
               Icons.group,
               color: Colors.white,
             ),
-            label: 'Players',
+            label: 'Jugadores',
             backgroundColor: Colors.grey[850],
           ),
           BottomNavigationBarItem(
@@ -269,7 +269,7 @@ class _HomeState extends State<MainScreen> {
               Icons.star,
               color: Colors.white,
             ),
-            label: 'Standings',
+            label: 'Clasificaciones',
             backgroundColor: Colors.grey[850],
           ),
         ],

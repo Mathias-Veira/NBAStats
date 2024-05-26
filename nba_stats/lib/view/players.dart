@@ -24,7 +24,7 @@ class _PlayersState extends State<Players> {
                 context: context, delegate: SearchPlayerDelegate(players));
           },
           title: const Text(
-            'Search Players',
+            'Buscar Jugadores',
           ),
         ),
       ),
