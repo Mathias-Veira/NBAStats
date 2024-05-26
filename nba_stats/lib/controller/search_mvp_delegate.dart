@@ -74,6 +74,15 @@ class SearchMVPDelegate extends SearchDelegate {
         Seguir(idUsuario: idUsuario, idJugador: idJugador));
   }
 
+  void showSnackBar(BuildContext context, String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        mensaje,
+        textAlign: TextAlign.center,
+      ),
+    ));
+  }
+
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
@@ -101,8 +110,10 @@ class SearchMVPDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              onTap: () =>
-                  seguirJugador(usuario!.usuarioId, _filter[index].idJugador),
+              onTap: () {
+                seguirJugador(usuario!.usuarioId, _filter[index].idJugador);
+                showSnackBar(context, "Añadido a jugadores Favoritos");
+              },
               title: Row(
                 children: [
                   Text(
@@ -146,8 +157,10 @@ class SearchMVPDelegate extends SearchDelegate {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              onTap: () =>
-                  seguirJugador(usuario!.usuarioId, _filter[index].idJugador),
+              onTap: () {
+                seguirJugador(usuario!.usuarioId, _filter[index].idJugador);
+                showSnackBar(context, "Añadido a Jugadores Favoritos");
+              },
               title: Row(
                 children: [
                   Text(

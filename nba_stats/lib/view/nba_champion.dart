@@ -14,9 +14,8 @@ class NBAChampion extends StatefulWidget {
 }
 
 class _NBAChampionState extends State<NBAChampion> {
-
   List<Equipo> equipos = [];
-  
+
   @override
   void initState() {
     super.initState();
@@ -36,6 +35,15 @@ class _NBAChampionState extends State<NBAChampion> {
     ApiService.apoyarEquipo(Apoyar(idUsuario: idUsuario, idEquipo: idEquipo));
   }
 
+  void showSnackBar(BuildContext context, String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+        mensaje,
+        textAlign: TextAlign.center,
+      ),
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -43,8 +51,10 @@ class _NBAChampionState extends State<NBAChampion> {
         itemBuilder: (_, index) {
           return Card(
             child: ListTile(
-              onTap: () =>
-                  apoyarEquipo(widget.user!.usuarioId, equipos[index].idEquipo),
+              onTap: () {
+                apoyarEquipo(widget.user!.usuarioId, equipos[index].idEquipo);
+                showSnackBar(context, "Añadido a Equipos Favoritos");
+              },
               title: Row(
                 children: [
                   Image.asset(

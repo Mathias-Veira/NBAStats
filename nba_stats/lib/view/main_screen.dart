@@ -111,35 +111,28 @@ class _HomeState extends State<MainScreen> {
         children: screens,
       ),
       drawer: Drawer(
-        backgroundColor: Colors.teal[200],
+        backgroundColor: Colors.black,
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              decoration: BoxDecoration(color: Colors.teal[100]),
-              accountName: Text(
-                usuario?.nombreUsuario ?? '',
-                style: const TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.bold),
+              decoration: BoxDecoration(color: Colors.black, image: DecorationImage(image: AssetImage('assets/nba.png'),alignment: Alignment.centerRight) ),
+              accountName: Column(
+                children: [
+                  Text('Usuario '),
+                  Text(
+                    usuario?.nombreUsuario ?? '',
+                    style: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                ],
               ),
               accountEmail: const Text(''),
-              currentAccountPictureSize: const Size(55, 55),
-              currentAccountPicture: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey,
-                ),
-                child: const Center(
-                  child: Icon(
-                    Icons.person,
-                    size: 40,
-                  ),
-                ),
-              ),
+              
             ),
             ListTile(
               title: const Text(
-                "Stats Leaders",
+                "Líderes en Estadísticas",
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
