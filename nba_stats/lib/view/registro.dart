@@ -7,7 +7,6 @@ import 'package:nba_stats/controller/api_request.dart';
 
 import '../model/usuario.dart';
 
-
 class RegistroState extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => Registro();
@@ -42,7 +41,7 @@ class Registro extends State<RegistroState> {
                       if (value!.isEmpty) {
                         return "Campo obligatorio";
                       }
-                  
+
                       if (!isValidEmail(value)) {
                         return "Correo no válido";
                       }
@@ -83,7 +82,7 @@ class Registro extends State<RegistroState> {
                       if (value!.isEmpty) {
                         return "Campo obligatorio";
                       }
-                  
+
                       if (value.length < 12) {
                         return "La contraseña debe ser de 12 caracteres o más";
                       }
@@ -105,7 +104,7 @@ class Registro extends State<RegistroState> {
                       if (value!.isEmpty) {
                         return "Campo obligatorio";
                       }
-                  
+
                       if (value != passwordController.text) {
                         return "Las contraseñas son distintas";
                       }
@@ -143,15 +142,54 @@ class Registro extends State<RegistroState> {
     return regExp.hasMatch(email);
   }
 
-  cambiarPagina(BuildContext context, String nombreUsuario, String correo,
-      String password) async{
+  showAlertDialog(BuildContext context) {
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        nombreUsuario = "";
+        correo = "";
+        password = "";
+        passwordController.text = "";
+        Navigator.of(context).pop();
+      },
+    );
 
-    Usuario usuario = Usuario(usuarioId: 1, nombreUsuario: nombreUsuario, passwordUsuario: password,correoUsuario: correo);
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Error"),
+      content: Text("El usuario ya existe."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  cambiarPagina(BuildContext context, String nombreUsuario, String correo,
+      String password) async {
+    Usuario usuario = Usuario(
+        usuarioId: 1,
+        nombreUsuario: nombreUsuario,
+        passwordUsuario: password,
+        correoUsuario: correo);
     int comprobar = await ApiService.crearUsuario(usuario);
-    if(comprobar == 201){
+    if (comprobar == 201) {
       Navigator.of(context).pushNamed('/login',
-        arguments: Usuario(usuarioId: 1, nombreUsuario: nombreUsuario, passwordUsuario: password, correoUsuario: correo));
+          arguments: Usuario(
+              usuarioId: 1,
+              nombreUsuario: nombreUsuario,
+              passwordUsuario: password,
+              correoUsuario: correo));
+    } else if (comprobar == 400) {
+      showAlertDialog(context);
     }
-    
   }
 }
