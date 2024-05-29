@@ -56,7 +56,7 @@ class NbaStats extends StatelessWidget {
             ),
         '/statsLeaders': (BuildContext context) => const stats_leaders(),
         '/playoffsSeries': (BuildContext context) => const playoff_series(),
-        '/login': (BuildContext context) => LoginState(),
+        '/login': (BuildContext context) => const LoginState(usuario: null,),
         '/registro': (BuildContext context) => RegistroState(),
         '/mvp':(BuildContext context) => const MVP(user: null,),
         '/champion':(BuildContext context) => const NBAChampion(user: null,),

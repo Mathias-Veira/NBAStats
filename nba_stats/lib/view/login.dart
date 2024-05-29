@@ -14,6 +14,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/usuario.dart';
 
 class LoginState extends StatefulWidget {
+  final Usuario? usuario;
+  const LoginState({super.key, required this.usuario});
+
   @override
   State<StatefulWidget> createState() => Login();
 }
@@ -30,8 +33,6 @@ class Login extends State<LoginState> {
 
   @override
   Widget build(BuildContext context) {
-    //Creamos objeto usuario con los datos pasados de la página de registro
-    Usuario? usuario = ModalRoute.of(context)!.settings.arguments as Usuario?;
     String nombreUsuario = '';
     String passwordUsuario = '';
 
@@ -62,7 +63,7 @@ class Login extends State<LoginState> {
                           return "Campo obligatorio";
                         }
 
-                        if (value != usuario?.nombreUsuario) {
+                        if (value != widget.usuario?.nombreUsuario) {
                           return "Nombre de Usuario incorrecto";
                         }
                         return null;
@@ -86,7 +87,7 @@ class Login extends State<LoginState> {
                           return "Campo obligatorio";
                         }
 
-                        if (value != usuario?.passwordUsuario) {
+                        if (value != widget.usuario?.passwordUsuario) {
                           return "Contraseña incorrecta";
                         }
                         return null;
@@ -107,7 +108,7 @@ class Login extends State<LoginState> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
-                          if (usuario == null) {
+                          if (widget.usuario == null) {
                             nombreUsuario = usernameController.text;
                             passwordUsuario = passwordController.text;
                             String pass = generarHash(passwordUsuario);

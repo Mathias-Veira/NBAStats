@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:nba_stats/controller/api_request.dart';
+import 'package:nba_stats/view/login.dart';
 
 import '../model/usuario.dart';
 
@@ -162,11 +163,12 @@ class Registro extends State<RegistroState> {
         usuarioId: 1, nombreUsuario: nombreUsuario, passwordUsuario: pass);
     int comprobar = await ApiService.crearUsuario(usuario);
     if (comprobar == 201) {
-      Navigator.of(context).pushNamed('/login',
-          arguments: Usuario(
-              usuarioId: 1,
-              nombreUsuario: nombreUsuario,
-              passwordUsuario: pass));
+      usuario.passwordUsuario = password;
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => LoginState(usuario: usuario),
+        ),
+      );
     } else if (comprobar == 400) {
       showAlertDialog(context);
     }
