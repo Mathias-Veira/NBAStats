@@ -16,7 +16,6 @@ class Registro extends State<RegistroState> {
   final keyForm = GlobalKey<FormState>();
   TextEditingController passwordController = TextEditingController();
   String nombreUsuario = "";
-  String correo = "";
   String password = "";
   @override
   Widget build(BuildContext context) {
@@ -31,25 +30,7 @@ class Registro extends State<RegistroState> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Expanded(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Email",
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Campo obligatorio";
-                      }
-
-                      if (!isValidEmail(value)) {
-                        return "Correo no válido";
-                      }
-                      correo = value;
-                      return null;
-                    },
-                  ),
-                ),
+                
                 SizedBox(
                   height: 20.0,
                 ),
@@ -120,7 +101,7 @@ class Registro extends State<RegistroState> {
                 ElevatedButton(
                   onPressed: () {
                     if (keyForm.currentState!.validate()) {
-                      cambiarPagina(context, nombreUsuario, correo, password);
+                      cambiarPagina(context, nombreUsuario, password);
                     } else {
                       print("Formulario incorrecto");
                     }
@@ -148,7 +129,6 @@ class Registro extends State<RegistroState> {
       child: Text("OK"),
       onPressed: () {
         nombreUsuario = "";
-        correo = "";
         password = "";
         passwordController.text = "";
         Navigator.of(context).pop();
@@ -173,21 +153,19 @@ class Registro extends State<RegistroState> {
     );
   }
 
-  cambiarPagina(BuildContext context, String nombreUsuario, String correo,
+  cambiarPagina(BuildContext context, String nombreUsuario,
       String password) async {
     Usuario usuario = Usuario(
         usuarioId: 1,
         nombreUsuario: nombreUsuario,
-        passwordUsuario: password,
-        correoUsuario: correo);
+        passwordUsuario: password);
     int comprobar = await ApiService.crearUsuario(usuario);
     if (comprobar == 201) {
       Navigator.of(context).pushNamed('/login',
           arguments: Usuario(
               usuarioId: 1,
               nombreUsuario: nombreUsuario,
-              passwordUsuario: password,
-              correoUsuario: correo));
+              passwordUsuario: password));
     } else if (comprobar == 400) {
       showAlertDialog(context);
     }

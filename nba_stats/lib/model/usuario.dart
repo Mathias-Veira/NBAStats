@@ -11,13 +11,11 @@ class Usuario {
   int usuarioId;
   String nombreUsuario;
   String passwordUsuario;
-  String? correoUsuario;
   //Constructor
   Usuario({
     required this.usuarioId,
     required this.nombreUsuario,
     required this.passwordUsuario,
-    this.correoUsuario
   });
   //Este método permite construir un objeto de la clase Usuario haciendo uso del json
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(

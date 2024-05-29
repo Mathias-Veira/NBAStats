@@ -67,6 +67,10 @@ class _GamesState extends State<Games> {
                   );
                 } else if (snapshot.hasError) {
                   return Text(snapshot.error.toString());
+                } else if (snapshot.data.data.isEmpty) {
+                  return const Center(
+                    child: Text('Hoy no hay partidos', style: TextStyle(color: Colors.white),),
+                  );
                 } else {
                   return _ListaPartidos(
                       snapshot.data != null ? snapshot.data.data : []);
@@ -101,7 +105,6 @@ class _ListaPartidos extends StatelessWidget {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  
                   Container(
                       width: 50,
                       decoration: BoxDecoration(
@@ -114,16 +117,18 @@ class _ListaPartidos extends StatelessWidget {
                           '.png')),
                   Expanded(
                     child: Center(
-                        child: Text(partidos[i].visitorTeam!.name +
-                            ' ' +
-                            partidos[i].visitorTeamScore.toString() +
-                            '-' +
-                            partidos[i].homeTeamScore.toString() +
-                            ' ' +
-                            partidos[i].homeTeam!.name +
-                            ' ', style: TextStyle(fontSize: 15),)),
+                        child: Text(
+                      partidos[i].visitorTeam!.name +
+                          ' ' +
+                          partidos[i].visitorTeamScore.toString() +
+                          '-' +
+                          partidos[i].homeTeamScore.toString() +
+                          ' ' +
+                          partidos[i].homeTeam!.name +
+                          ' ',
+                      style: TextStyle(fontSize: 15),
+                    )),
                   ),
-                  
                   Container(
                       width: 50,
                       decoration: BoxDecoration(shape: BoxShape.circle),
@@ -160,8 +165,10 @@ class _ListaPartidos extends StatelessWidget {
   }
 
   cambiarPagina(BuildContext context, int idPartido) {
-    Navigator.of(context).push(MaterialPageRoute(
-    builder: (context) => game_detail(idPartido: idPartido),
-  ),);
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => game_detail(idPartido: idPartido),
+      ),
+    );
   }
 }

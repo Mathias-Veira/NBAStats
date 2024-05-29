@@ -32,8 +32,8 @@ class _HomeState extends State<Home> {
           SizedBox(
             height: 300,
             child: FutureBuilder(
-                future:
-                    ApiService.getAllFollowedPlayersStats(widget.user?.usuarioId ?? 0),
+                future: ApiService.getAllFollowedPlayersStats(
+                    widget.user?.usuarioId ?? 0),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -54,7 +54,8 @@ class _HomeState extends State<Home> {
           Container(
             height: 400,
             child: FutureBuilder(
-                future: ApiService.getAllFollowedTeams(widget.user?.usuarioId ?? 0),
+                future:
+                    ApiService.getAllFollowedTeams(widget.user?.usuarioId ?? 0),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -142,6 +143,8 @@ class _ListarEquiposFavoritos extends StatelessWidget {
             child: ListTile(
               title: Row(
                 children: [
+                  Text('${equipos[index].puestoConferencia}.'),
+                  Padding(padding: EdgeInsets.only(left: 20)),
                   Image.asset(
                     equipos[index].imagenEquipo,
                     width: 30.0,
