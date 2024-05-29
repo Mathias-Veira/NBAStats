@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -107,9 +110,10 @@ class Login extends State<LoginState> {
                           if (usuario == null) {
                             nombreUsuario = usernameController.text;
                             passwordUsuario = passwordController.text;
+                            String pass = generarHash(passwordUsuario);
                             Acceso user = Acceso(
                                 nombreUsuario: nombreUsuario,
-                                passwordUsuario: passwordUsuario);
+                                passwordUsuario: pass);
                             int respuesta =
                                 await ApiService.iniciarSesion(user);
 
@@ -119,8 +123,6 @@ class Login extends State<LoginState> {
                                   passwordUsuario: passwordUsuario);
                               guardarIsLogedInEnSharedPreferences(true, user);
                               cambiarPaginaApp(context, nombreUsuario);
-                            } else {
-                              //mostrar alerta diciendo que la contraseña o usuario son incorrectos
                             }
                           }
 
@@ -169,6 +171,12 @@ class Login extends State<LoginState> {
         builder: (context) => MainScreen(nombreUsuario: nombreUsuario),
       ),
     );
+  }
+
+  String generarHash(String pass) {
+    final bytes = utf8.encode(pass);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 
   void guardarIsLogedInEnSharedPreferences(bool value, Acceso user) async {

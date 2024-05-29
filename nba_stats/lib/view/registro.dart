@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors
 
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +33,6 @@ class Registro extends State<RegistroState> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                
                 SizedBox(
                   height: 20.0,
                 ),
@@ -153,21 +155,26 @@ class Registro extends State<RegistroState> {
     );
   }
 
-  cambiarPagina(BuildContext context, String nombreUsuario,
-      String password) async {
+  cambiarPagina(
+      BuildContext context, String nombreUsuario, String password) async {
+    String pass = generarHash(password);
     Usuario usuario = Usuario(
-        usuarioId: 1,
-        nombreUsuario: nombreUsuario,
-        passwordUsuario: password);
+        usuarioId: 1, nombreUsuario: nombreUsuario, passwordUsuario: pass);
     int comprobar = await ApiService.crearUsuario(usuario);
     if (comprobar == 201) {
       Navigator.of(context).pushNamed('/login',
           arguments: Usuario(
               usuarioId: 1,
               nombreUsuario: nombreUsuario,
-              passwordUsuario: password));
+              passwordUsuario: pass));
     } else if (comprobar == 400) {
       showAlertDialog(context);
     }
+  }
+
+  String generarHash(String pass) {
+    final bytes = utf8.encode(pass);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 }
