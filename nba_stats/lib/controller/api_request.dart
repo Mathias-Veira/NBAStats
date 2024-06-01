@@ -52,7 +52,7 @@ class ApiService {
     //Se devuelve el código de respuesta
     return statusCode;
   }
-
+  //Este método permite obtener un usuario
   static Future<Usuario> obtenerUsuario(String nombre) async {
     String url = '$baseUrl/usuarios/$nombre';
     int statusCode = 0;
@@ -103,7 +103,7 @@ class ApiService {
     return statusCode;
   }
 
-  //Este método permite listar todos los mazos de un usuario en concreto
+  //Este método permite listar todos los jugadores
   static Future<List<Jugador>> listarJugadores() async {
     String url = '$baseUrl/players';
     List<Jugador> jugadores = [];
@@ -123,7 +123,7 @@ class ApiService {
     //Se devuelve la lista de jugadores
     return jugadores;
   }
-
+  //Este método permite obtener los partidos que se van a jugar en una fecha concreta
   static Future<Game?> listarPartidos(DateTime fecha) async {
     String url =
         'https://api.balldontlie.io/v1/games?dates[]=${fecha.year}-${fecha.month.toString().padLeft(2, '0')}-${fecha.day.toString().padLeft(2, '0')}';
@@ -141,10 +141,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return null;
   }
-
+  //Este método permite obtener la clasificación general
   static Future<List<Equipo>> getRanking() async {
     String url = '$baseUrl/ranking';
     try {
@@ -160,10 +159,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return List.empty();
   }
-
+  //Este método permite obtener la clasificación según la conferencia
   static Future<List<Equipo>> getRankingByConference(String conference) async {
     String url = '$baseUrl/ranking/$conference';
     try {
@@ -182,7 +180,7 @@ class ApiService {
     //Se devuelve la lista de partidos
     return List.empty();
   }
-
+  //Este método permite obtener la clasificación según la división
   static Future<List<Equipo>> getRankingByDivision(String division) async {
     String url = '$baseUrl/ranking/division/$division';
     try {
@@ -198,10 +196,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de rankings
     return List.empty();
   }
-
+  //Este método permite obtener las estadísticas de un partido
   static Future<Estadistica> getStatsByGame(int idPartido) async {
     String url = 'https://api.balldontlie.io/v1/stats?game_ids[]=$idPartido';
     try {
@@ -218,10 +215,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return Estadistica(data: []);
   }
-
+  //Este método permite obtener las promedios de los jugadores
   static Future<List<PromedioJugadores>> getStats() async {
     String url = '$baseUrl/stats';
     List<PromedioJugadores> promedio = [];
@@ -239,10 +235,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return promedio;
   }
-
+  //Este método permite obtener los jugadores con mejor promedios en diferentes estadísticas
   static Future<List<PromedioJugadores>> getPromedioByStat(String stat) async {
     String url = '';
     switch (stat) {
@@ -285,10 +280,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return promedio;
   }
-
+  //Este método permite obtener los partidos de los PlayOffs
   static Future<Game> getPlayOffGames() async {
     String url =
         'https://api.balldontlie.io/v1/games?postseason=true&seasons[]=2023&per_page=100';
@@ -308,7 +302,7 @@ class ApiService {
     }
     return Game(data: []);
   }
-
+  //Este método permite obtener todos los partidos
   static Future<List<Equipo>> getAllTeams() async {
     String url = '$baseUrl/teams';
     List<Equipo> equipos = [];
@@ -326,16 +320,14 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de partidos
     return equipos;
   }
 
 
-  //Este método permite verificar si los datos de inicio de sesión son correctos
+  //Este método permite almacenar un jugador en la base de datos y el usuario que sigue a ese jugador
   static Future<int> seguirJugador(Seguir seguir) async {
     String url = '$baseUrl/seguir';
     int statusCode = 0;
-    //En esta variable se almacena el usuario que se pasa por parámetro convertido en json
     String jsonBody = json.encode(seguir.toJson());
 
     try {
@@ -362,7 +354,7 @@ class ApiService {
     return statusCode;
   }
 
-  //Este método permite verificar si los datos de inicio de sesión son correctos
+  //Este método permite almacenar un equipo en la base de datos y el usuario que apoya a ese equipo
   static Future<int> apoyarEquipo (Apoyar apoyar) async {
     String url = '$baseUrl/apoyar';
     int statusCode = 0;
@@ -393,7 +385,7 @@ class ApiService {
     return statusCode;
   }
 
-   //Este método permite listar todos los mazos de un usuario en concreto
+   //Este método permite obtener los promedios de los jugadores que sigue un usuario
   static Future<List<PromedioJugadores>> getAllFollowedPlayersStats(int idUsuario) async {
     String url = '$baseUrl/promedios/jugadores/seguidos/$idUsuario';
     List<PromedioJugadores> promedios = [];
@@ -410,11 +402,10 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de jugadores
     return promedios;
   }
 
-   //Este método permite listar todos los mazos de un usuario en concreto
+   //Este método permite obtener un equipo según el id de un jugador
   static Future<Equipo> getTeamById(int idJugador) async {
     String url = '$baseUrl/team/$idJugador';
     Equipo equipo = Equipo(idEquipo: 0, nombreEquipo: "", ciudadEquipo: "", abreviacionEquipo: "", imagenEquipo: "", conferenciaEquipo: "", divisionEquipo: "", puestoConferencia: 0, puestoDivision: 0, nVictorias: 0, nDerrotas: 0, porcentajeVictorias: 0);
@@ -431,10 +422,9 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de jugadores
     return equipo ;
   }
-
+   //Este método permite obtener todos los equipos que sigue un usuario
    static Future<List<Equipo>> getAllFollowedTeams(int idUsuario) async {
     String url = '$baseUrl/equipos/apoyados/$idUsuario';
     List<Equipo> equipos = [];
@@ -451,7 +441,6 @@ class ApiService {
     } catch (e) {
       print('Error conexión: $e');
     }
-    //Se devuelve la lista de jugadores
     return equipos;
   }
 }
